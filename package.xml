@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>sfPropelActAsCommentableBehaviorPlugin</name>
+ <channel>pear.symfony-project.com</channel>
+ <summary>Propel commentable behavior</summary>
+ <description>This behavior permits to attach comments to Propel objects. It provides a module for enabling comments in your application in less than 3 minutes.</description>
+ <lead>
+  <name>Xavier Lacot</name>
+  <user>xavier</user>
+  <email>xavier@lacot.org</email>
+  <active>yes</active>
+ </lead>
+ <date>2007-09-26</date>
+ <time>17:14:12</time>
+ <version>
+  <release>0.2.0</release>
+  <api>0.2.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.symfony-project.com/license">MIT license</license>
+ <notes>
+ * added a Symfony module for posting and displaying comments
+   * ajax support
+   * authenticated users support
+   * form customization
+ * added an administration module
+ </notes>
+ <contents>
+  <dir name="/">
+   <dir name="config">
+    <file name="app.yml.sample" role="data" />
+    <file name="config.php" role="data" />
+    <file name="schema.yml" role="data" />
+    <file name="schemaConfig.php" role="data" />
+    <file name="sfPropelActAsCommentableBehaviorPlugin.yml.sample" role="data" />
+   </dir>
+   <dir name="lib">
+    <dir name="model">
+     <dir name="map" />
+     <dir name="om" />
+     <file name="sfComment.php" role="data" />
+     <file name="sfCommentPeer.php" role="data" />
+    </dir>
+     <file name="sfPropelActAsCommentableBehavior.class.php" role="data" />
+     <file name="sfPropelActAsCommentableToolkit.class.php" role="data" />
+   </dir>
+   <dir name="modules">
+    <dir name="sfComment">
+     <dir name="actions">
+	  <file name="actions.class.php" role="data" />
+	  <file name="components.class.php" role="data" />
+     </dir>
+     <dir name="config" />
+     <dir name="i18n" />
+     <dir name="lib">
+	  <file name="BasesfCommentActions.class.php" role="data" />
+	  <file name="BasesfCommentComponents.class.php" role="data" />
+     </dir>
+     <dir name="templates">
+	  <file name="_commentForm.php" role="data" />
+	  <file name="_commentList.php" role="data" />
+	  <file name="_commentView.php" role="data" />
+	  <file name="commentFormSuccess.php" role="data" />
+	  <file name="commentSuccess.php" role="data" />
+     </dir>
+     <dir name="validate">
+	  <file name="anonymousComment.yml" role="data" />
+	  <file name="authenticatedComment.yml" role="data" />
+     </dir>
+    </dir>
+    <dir name="sfCommentAdmin">
+     <dir name="actions">
+	  <file name="actions.class.php" role="data" />
+     </dir>
+     <dir name="config">
+	  <file name="generator.yml" role="data" />
+	 </dir>
+     <dir name="lib" />
+     <dir name="templates" />
+    </dir>
+   </dir>
+   <dir name="test">
+    <dir name="unit">
+     <!-- unit tests -->
+     <file name="sfPropelActAsCommentableBehaviorTest.php" role="data" />
+    </dir>
+   </dir>
+   <dir name="web">	
+   <!-- assets -->
+    <dir name="css">
+     <file name="sf_comment.css" role="data" />
+    </dir>
+    <dir name="images">
+     <file name="indicator.gif" role="data" />
+	 <file name="input-shadow.gif" role="data" />
+	 <file name="input-shadow-required.gif" role="data" />
+    </dir>
+   </dir>
+   <file name="README" role="data" />
+   <file name="LICENSE" role="data" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.1</min>
+   </pearinstaller>
+   <package>
+    <name>symfony</name>
+    <channel>pear.symfony-project.com</channel>
+    <min>1.0.0</min>
+    <max>1.1.0</max>
+    <exclude>1.1.0</exclude>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-09-26</date>
+   <license uri="http://www.symfony-project.com/license">MIT license</license>
+   <notes>* added a Symfony module for posting and displaying comments
+   * ajax support
+   * authenticated users support
+   * form customization
+ * added an administration module</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-09-13</date>
+   <license uri="http://www.symfony-project.com/license">MIT license</license>
+   <notes>Initial public release. Features comments attachment to heterogene Propel objects.</notes>
+  </release>
+ </changelog>
+</package>
