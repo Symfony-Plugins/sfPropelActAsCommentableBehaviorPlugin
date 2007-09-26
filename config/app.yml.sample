@@ -6,13 +6,13 @@ all:
       layout:
         name:         required
         email:        required
-        title:        optionnal
+        title:        optional
         comment:      required
       name:           Anonymous User
     user:
       enabled:        true
       layout:
-        title:        optionnal
+        title:        optional
         comment:      required
       table:          sf_guard_user
       id:             id

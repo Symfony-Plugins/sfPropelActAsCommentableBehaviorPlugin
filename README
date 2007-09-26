@@ -10,7 +10,7 @@ This behavior permits to attach comments to Propel objects. It provides a module
  * comment module, with ajax support and layout customization
  * comment admin-module
 
-== Sreenshots ==
+== Screenshots ==
 [[Image(sfPropelActAsCommentableBehaviorPlugin_comment_1.png, 25%)]]
 [[Image(sfPropelActAsCommentableBehaviorPlugin_comment_2.png, 25%)]]
 [[Image(sfPropelActAsCommentableBehaviorPlugin_comment_3.png, 25%)]]
@@ -73,13 +73,13 @@ all:
       layout:
         name:         required
         email:        required
-        title:        optionnal
+        title:        optional
         comment:      required
       name:           Anonymous User
     user:
       enabled:        true
       layout:
-        title:        optionnal
+        title:        optional
         comment:      required
       table:          sf_guard_user
       id:             id

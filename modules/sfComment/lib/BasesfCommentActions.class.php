@@ -87,11 +87,11 @@ class BasesfCommentActions extends sfActions
     $config_anonymous = array('enabled' => true, 
                               'layout'  => array('name' => 'required', 
                                                  'email' => 'required', 
-                                                 'title' => 'optionnal', 
+                                                 'title' => 'optional', 
                                                  'comment' => 'required'), 
                               'name'    => 'Anonymous User');
     $config_user = array('enabled'   => true, 
-                         'layout'    => array('title' => 'optionnal', 
+                         'layout'    => array('title' => 'optional', 
                                               'comment' => 'required'), 
                          'table'     => 'sf_guard_user', 
                          'id'        => 'id', 
