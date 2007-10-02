@@ -95,9 +95,17 @@ class sfPropelActAsCommentableBehavior
    * 
    * @return     Array
    */
-  public function getComments(BaseObject $object, $options = array())
+  public function getComments(BaseObject $object, $options = array(), Criteria $criteria = null)
   {
-    $c = new Criteria();
+    if ($criteria != null)
+    {
+      $c = clone $criteria;
+    }
+    else
+    {
+      $c = new Criteria();
+    }
+
     $c->add(sfCommentPeer::COMMENTABLE_ID, $object->getPrimaryKey());
     $c->add(sfCommentPeer::COMMENTABLE_MODEL, get_class($object));
 

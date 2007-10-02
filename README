@@ -200,6 +200,9 @@ This plugin is licensed under the MIT license. You can contact the maintainer at
 
 == Changelog ==
 
+=== trunk ===
+ * made getComments() more flexible (closes #2312, thanks to FrankStelzer)
+
 === version 0.2 - 2007-09-26 ===
  * added a Symfony module for posting and displaying comments
    * ajax support
