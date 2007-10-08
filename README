@@ -334,9 +334,9 @@ all:
       backend:        administrator
    }}}
 
- * tweak these values accordingly to the [#Optionalsettings previously 
- explained settings]. Please note that only administrator can add comments in 
- the comments "backend" namespace.
+ * tweak these values accordingly to the 
+ [#Optionalsettings previously  explained settings]. Please note that only 
+ administrator can add comments in the comments "backend" namespace.
 
 === Add comments in front-office ===
 Include the sfComment components where the comments and the commentform should appear:
