@@ -129,10 +129,10 @@ file, you can tweak the default setup:
  check must be made:
    * when a namespace is listed under the '''namespaces''' parameter, its value 
    represents the required credentials for writing in it.
-   * If you use namespaces in your comments, please make sure 
- that you fill this parameter accordingly to your needs. For instance, if your 
- application provide back-office internal comments, you won't want a normal 
- front-office user being able to add comments on the back-office.
+   * If you use namespaces in your comments, please make sure  that you fill 
+   this parameter accordingly to your needs. For instance, if your application 
+   provide back-office internal comments, you won't want a normal front-office 
+   user being able to add comments on the back-office.
    * You can of course use your own namespaces names (ie., "backend" and 
    "frontend" are not compulsory names).
 
