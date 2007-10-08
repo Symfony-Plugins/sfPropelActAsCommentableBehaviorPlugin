@@ -10,11 +10,11 @@
   <email>xavier@lacot.org</email>
   <active>yes</active>
  </lead>
- <date>2007-09-26</date>
- <time>17:14:12</time>
+ <date>2007-10-08</date>
+ <time>21:06:12</time>
  <version>
-  <release>0.2.0</release>
-  <api>0.2.0</api>
+  <release>0.3.0</release>
+  <api>0.3.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -22,11 +22,9 @@
  </stability>
  <license uri="http://www.symfony-project.com/license">MIT license</license>
  <notes>
- * added a Symfony module for posting and displaying comments
-   * ajax support
-   * authenticated users support
-   * form customization
- * added an administration module
+ * added namespaces support
+ * fixed bad index names (thanks to francois)
+ * made getComments() more flexible (closes #2312, thanks to FrankStelzer)
  </notes>
  <contents>
   <dir name="/">
@@ -122,6 +120,21 @@
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.3.0</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-10-08</date>
+   <license uri="http://www.symfony-project.com/license">MIT license</license>
+   <notes>* added namespaces support
+ * fixed bad index names (thanks to francois)
+ * made getComments() more flexible (closes #2312, thanks to FrankStelzer)</notes>
+  </release>
   <release>
    <version>
     <release>0.2.0</release>
