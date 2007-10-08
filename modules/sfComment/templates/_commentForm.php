@@ -11,6 +11,12 @@
                       'name'  => 'sf_comment_form'));
   ?>
     <fieldset>
+      <?php if ($sf_request->hasError('unauthorized')): ?>
+        <div class="sf_comment_form_error">
+          <?php echo $sf_request->getError('unauthorized') ?>
+        </div>
+      <?php endif; ?>
+
       <?php if (isset($config_used['layout']['name'])): ?>
         <div class="<?php echo $config_used['layout']['name']; ?>">
           <?php echo form_error('sf_comment_name') ?>
@@ -63,6 +69,10 @@
     <?php echo input_hidden_tag('sf_comment_referer', sfContext::getInstance()->getRequest()->getParameter('sf_comment_referer', $referer)) ?>
     <?php echo input_hidden_tag('sf_comment_object_id', $object_id) ?>
     <?php echo input_hidden_tag('sf_comment_object_model', $object_model) ?>
+
+    <?php if (isset($namespace) && ($namespace != null)): ?>
+      <?php echo input_hidden_tag('sf_comment_namespace', $namespace) ?>
+    <?php endif; ?>
 
     <?php if ($config['use_ajax']): ?>
       <div id="sf_comment_ajax_indicator" style="display: none">&nbsp;</div>

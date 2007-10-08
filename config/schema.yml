@@ -13,6 +13,7 @@
     id:                { phpName: Id, type: integer, required: true, primaryKey: true, autoincrement: true }
     commentable_model: varchar(30)
     commentable_id:    integer
+    namespace:         varchar(50)
     title:             varchar(100)
     text:              longvarchar
     author_id:         integer
@@ -20,5 +21,6 @@
     author_email:      varchar(100)
     created_at:
     _indexes:
+      comments_index:  [namespace, commentable_model, commentable_id]
       object_index:    [commentable_model, commentable_id]
       author_index:    [author_id]

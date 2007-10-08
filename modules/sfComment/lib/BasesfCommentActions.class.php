@@ -29,8 +29,13 @@ class BasesfCommentActions extends sfActions
       $comment = array('text' => $this->getRequestParameter('sf_comment'));
       $object = sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
       $id_method = $this->config_user['id_method'];
+      $namespace = $this->getRequestParameter('sf_comment_namespace', null);
+      $this->namespace = $namespace;
+
+      $this->validateNamespace($namespace);
 
       $comment['author_id'] = sfContext::getInstance()->getUser()->$id_method();
+      $comment['namespace'] = $namespace;
 
       $object->addComment($comment);
       $this->object = $object;
@@ -55,9 +60,15 @@ class BasesfCommentActions extends sfActions
     {
       $object_id = $this->getRequestParameter('sf_comment_object_id');
       $object_model = $this->getRequestParameter('sf_comment_object_model');
+      $namespace = $this->getRequestParameter('sf_comment_namespace', null);
+      $this->namespace = $namespace;
+
+      $this->validateNamespace($namespace);
+
       $comment = array('text'         => $this->getRequestParameter('sf_comment'),
                        'author_name'  => $this->getRequestParameter('sf_comment_name'),
-                       'author_email' => $this->getRequestParameter('sf_comment_email'));
+                       'author_email' => $this->getRequestParameter('sf_comment_email'), 
+                       'namespace'    => $namespace);
       $object = sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
       $object->addComment($comment);
       $this->object = $object;
@@ -78,6 +89,7 @@ class BasesfCommentActions extends sfActions
   {
     $object_id = $this->getRequestParameter('sf_comment_object_id');
     $object_model = $this->getRequestParameter('sf_comment_object_model');
+    $this->namespace = $this->getRequestParameter('sf_comment_namespace', null);
 
     $this->object = sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
   }
@@ -99,14 +111,15 @@ class BasesfCommentActions extends sfActions
                          'id_method' => 'getUserId', 
                          'toString'  => 'toString', 
                          'save_name' => false);
-    $config = array('user'             => $config_user,
-                    'anonymous'        => $config_anonymous,
-                    'use_cryptographp' => false,
-                    'use_ajax'         => false);
 
-    $this->config = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin', $config);
     $this->config_anonymous = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_anonymous', $config_anonymous);
     $this->config_user = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_user', $config_user);
+
+    $config = array('user'             => $this->config_user,
+                    'anonymous'        => $this->config_anonymous,
+                    'use_ajax'         => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_ajax', false),
+                    'namespaces'       => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_namespaces', false));
+    $this->config = $config;
   }
 
   public function handleErrorAnonymousComment()
@@ -136,6 +149,19 @@ class BasesfCommentActions extends sfActions
     else
     {
       $this->forward($params[1]['module'], $params[1]['action']);
+    }
+  }
+
+  public function validateNamespace($namespace)
+  {
+    $this->getConfig();
+    $namespaces = $this->config['namespaces'];
+
+    if (isset($namespaces[$namespace]) && !$this->getUser()->hasCredential($namespaces[$namespace]))
+    {
+      $this->getRequest()->setError('unauthorized',
+                                    'You do not have the right to add comments in this namespace.');
+      $this->handleErrorComment();
     }
   }
 }

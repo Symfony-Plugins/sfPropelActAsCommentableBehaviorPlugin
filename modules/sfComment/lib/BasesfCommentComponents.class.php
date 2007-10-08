@@ -33,13 +33,19 @@ class BasesfCommentComponents extends sfComponents
   {
     $object = $this->object;
     $order = $this->order;
+    $namespace = $this->namespace;
 
     if (!$order)
     {
       $order = 'asc';
     }
 
-    $this->comments = $object->getComments(array('order' => $order));
+    if (!$namespace)
+    {
+      $namespace = null;
+    }
+
+    $this->comments = $object->getComments(array('order' => $order, 'namespace' => $namespace));
   }
 
   private function getConfig()
@@ -61,7 +67,8 @@ class BasesfCommentComponents extends sfComponents
                          'save_name' => false);
     $config = array('user'             => $config_user,
                     'anonymous'        => $config_anonymous,
-                    'use_ajax'         => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_ajax', false));
+                    'use_ajax'         => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_ajax', false),
+                    'namespaces'       => array());
 
     $this->config = $config;
     $this->config_anonymous = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_anonymous', $config_anonymous);

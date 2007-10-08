@@ -1,6 +1,5 @@
 all:
   sfPropelActAsCommentableBehaviorPlugin:
-    use_ajax:         true
     anonymous:
       enabled:        true
       layout:
@@ -20,3 +19,7 @@ all:
       id_method:      getId
       toString:       __toString
       save_name:      false
+    namespaces:
+      frontend:       -
+      backend:        administrator
+    use_ajax:         true

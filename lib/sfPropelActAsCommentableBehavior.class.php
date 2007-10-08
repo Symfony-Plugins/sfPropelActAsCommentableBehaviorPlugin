@@ -53,6 +53,12 @@ class sfPropelActAsCommentableBehavior
         {
           $comment['text'] = strip_tags($comment['text']);
           $comment['created_at'] = time();
+
+          if (!isset($comment['namespace']))
+          {
+            $comment['namespace'] = '';
+          }
+
           $comment_object = new sfComment();
           $comment_object->fromArray($comment, BasePeer::TYPE_FIELDNAME);
           $comment_object->setCommentableId($object->getPrimaryKey());
@@ -77,11 +83,17 @@ class sfPropelActAsCommentableBehavior
    * @param      BaseObject  $object
    * @return     boolean
    */
-  public function clearComments(BaseObject $object)
+  public function clearComments(BaseObject $object, $namespace = null)
   {
     $c = new Criteria();
     $c->add(sfCommentPeer::COMMENTABLE_ID, $object->getPrimaryKey());
     $c->add(sfCommentPeer::COMMENTABLE_MODEL, get_class($object));
+
+    if ($namespace != null)
+    {
+      $c->add(sfCommentPeer::NAMESPACE, $namespace);
+    }
+
     return sfCommentPeer::doDelete($c);
   }
 
@@ -108,6 +120,15 @@ class sfPropelActAsCommentableBehavior
 
     $c->add(sfCommentPeer::COMMENTABLE_ID, $object->getPrimaryKey());
     $c->add(sfCommentPeer::COMMENTABLE_MODEL, get_class($object));
+
+    if (isset($options['namespace']))
+    {
+      $c->add(sfCommentPeer::NAMESPACE, $options['namespace']);
+    }
+    else
+    {
+      $c->add(sfCommentPeer::NAMESPACE, '');
+    }
 
     if (isset($options['order']) && ($options['order'] == 'desc'))
     {

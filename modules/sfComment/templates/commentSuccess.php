@@ -1,1 +1,1 @@
-<?php include_component('sfComment', 'commentList', array('object' => $object)) ?>
+<?php include_component('sfComment', 'commentList', array('object' => $object, 'namespace' => $namespace)) ?>

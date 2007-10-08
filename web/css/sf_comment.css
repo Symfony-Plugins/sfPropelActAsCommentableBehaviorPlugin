@@ -50,6 +50,11 @@ background-color: #666;
 background: #fff url(../images/input-shadow-required.gif) top left no-repeat;
 }
 
+.sf_comment_form_error {
+color: red;
+font-weight: bold;
+}
+
 #sf_comment_ajax_indicator {
 width: 20px;
 height: 20px;
