@@ -2,11 +2,7 @@
 
 // Default values
 $config = array(
-  'connection'     => 'propel',
-  'user_table'     => 'sf_guard_user',
-  'user_id'        => 'id',
-  'user_class'     => 'sfGuardUser',
-  'comment_table'  => 'sf_comment',
+  'connection'     => 'propel'
 );
 
 // Check custom project values in my_project/config/sfCommentPlugin.yml
