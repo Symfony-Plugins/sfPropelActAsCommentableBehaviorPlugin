@@ -86,15 +86,15 @@
      <file name="sfPropelActAsCommentableBehaviorTest.php" role="data" />
     </dir>
    </dir>
-   <dir name="web">	
+   <dir name="web">
    <!-- assets -->
     <dir name="css">
      <file name="sf_comment.css" role="data" />
     </dir>
     <dir name="images">
      <file name="indicator.gif" role="data" />
-	 <file name="input-shadow.gif" role="data" />
-	 <file name="input-shadow-required.gif" role="data" />
+   <file name="input-shadow.gif" role="data" />
+   <file name="input-shadow-required.gif" role="data" />
     </dir>
    </dir>
    <file name="README" role="data" />
