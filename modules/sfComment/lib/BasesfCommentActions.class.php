@@ -94,7 +94,7 @@ class BasesfCommentActions extends sfActions
     $this->object = sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
   }
 
-  private function getConfig()
+  protected function getConfig()
   {
     $config_anonymous = array('enabled' => true, 
                               'layout'  => array('name' => 'required', 

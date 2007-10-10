@@ -48,7 +48,7 @@ class BasesfCommentComponents extends sfComponents
     $this->comments = $object->getComments(array('order' => $order, 'namespace' => $namespace));
   }
 
-  private function getConfig()
+  protected function getConfig()
   {
     $config_anonymous = array('enabled' => true, 
                               'layout'  => array('name' => 'required', 
