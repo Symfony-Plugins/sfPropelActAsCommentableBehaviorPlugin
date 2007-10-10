@@ -19,7 +19,7 @@ class BasesfCommentComponents extends sfComponents
     
     if ($this->getUser()->isAuthenticated() && $this->config_user['enabled'])
     {
-      $this->action = 'authentified_comment';
+      $this->action = 'authenticated_comment';
       $this->config_used = $this->config_user;
     }
     else

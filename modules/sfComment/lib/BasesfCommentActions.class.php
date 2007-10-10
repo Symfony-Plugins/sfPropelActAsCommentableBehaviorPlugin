@@ -127,7 +127,7 @@ class BasesfCommentActions extends sfActions
     $this->handleErrorComment();
   }
 
-  public function handleErrorAuthentifiedComment()
+  public function handleErrorAuthenticatedComment()
   {
     $this->handleErrorComment();
   }
