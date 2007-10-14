@@ -34,6 +34,7 @@ class BasesfCommentComponents extends sfComponents
     $object = $this->object;
     $order = $this->order;
     $namespace = $this->namespace;
+    $limit = $this->limit;
 
     if (!$order)
     {
@@ -45,7 +46,17 @@ class BasesfCommentComponents extends sfComponents
       $namespace = null;
     }
 
-    $this->comments = $object->getComments(array('order' => $order, 'namespace' => $namespace));
+    if (!$limit)
+    {
+      $criteria = null;
+    }
+    else
+    {
+      $criteria = new Criteria();
+      $criteria->setLimit($limit);
+    }
+
+    $this->comments = $object->getComments(array('order' => $order, 'namespace' => $namespace), $criteria);
   }
 
   protected function getConfig()
