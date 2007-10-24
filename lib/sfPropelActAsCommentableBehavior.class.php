@@ -104,6 +104,7 @@ class sfPropelActAsCommentableBehavior
    * 
    * @param      BaseObject  $object
    * @param      Array       $options
+   * @param      Criteria    $criteria
    * 
    * @return     Array
    */
@@ -157,11 +158,14 @@ class sfPropelActAsCommentableBehavior
    * Returns the number of the comments attached to the object.
    * 
    * @param      BaseObject  $object
+   * @param      Array       $options
+   * @param      Criteria    $criteria
+   * 
    * @return     integer
    */
-  public function getNbComments(BaseObject $object, $options = array())
+  public function getNbComments(BaseObject $object, $options = array(), Criteria $criteria = null)
   {
-    return count($this->getComments($object, $options));
+    return count($this->getComments($object, $options, $criteria));
   }
 
   /**
