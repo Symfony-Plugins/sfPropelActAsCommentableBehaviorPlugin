@@ -67,8 +67,7 @@
     }
     ?>
     <?php echo input_hidden_tag('sf_comment_referer', sfContext::getInstance()->getRequest()->getParameter('sf_comment_referer', $referer)) ?>
-    <?php echo input_hidden_tag('sf_comment_object_id', $object_id) ?>
-    <?php echo input_hidden_tag('sf_comment_object_model', $object_model) ?>
+    <?php echo input_hidden_tag('sf_comment_object_token', $token) ?>
 
     <?php if (isset($namespace) && ($namespace != null)): ?>
       <?php echo input_hidden_tag('sf_comment_namespace', $namespace) ?>

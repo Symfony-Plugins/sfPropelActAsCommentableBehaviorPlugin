@@ -1,9 +1,9 @@
 <?php
 // test variables definition
-define('TEST_CLASS', 'Post');
+define('TEST_CLASS', 'sfTestObject');
 
 // initializes testing framework
-$app = 'front';
+$app = 'frontend';
 include(dirname(__FILE__).'/../../../../test/bootstrap/functional.php');
 
 // initialize database manager
@@ -108,5 +108,6 @@ function _create_object()
     throw new Exception(sprintf('Unknow class "%s"', $classname));
   }
 
-  return new $classname();
+
+  return new $classname;
 }

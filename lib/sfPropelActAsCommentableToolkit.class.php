@@ -8,8 +8,52 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * sfPropelActAsCommentableBehavior toolkit class
+ * 
+ * @author Xavier Lacot
+ * @author Nicolas Perriault
+ */
 class sfPropelActAsCommentableToolkit
 {
+  
+  /**
+   * Add a token to available ones in the user session
+   * and return generated token
+   * 
+   * @author Nicolas Perriault
+   * @param  string  $object_model
+   * @param  int     $object_id
+   * @return string
+   */
+  public static function addTokenToSession($object_model, $object_id)
+  {
+    static $session;
+    if (!isset($session))
+    {
+      $session = sfContext::getInstance()->getUser();
+    }
+    $token = self::generateToken($object_model, $object_id);
+    $tokens = $session->getAttribute('tokens', array(), 'sf_commentables');
+    $tokens = array($token => array($object_model, $object_id)) + $tokens;
+    $tokens = array_slice($tokens, 0, sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_max_tokens', 10));
+    $session->setAttribute('tokens', $tokens, 'sf_commentables');
+    return $token;
+  }
+  
+  /**
+   * Generates token representing a commentable object from its model and its id
+   * 
+   * @author Nicolas Perriault
+   * @param  string  $object_model
+   * @param  int     $object_id
+   * @return string
+   */
+  public static function generateToken($object_model, $object_id)
+  {
+    return md5(sprintf('%s-%s-%s', $object_model, $object_id, sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_salt', 'c0mm3nt4bl3')));
+  }
+  
   /**
    * Returns true if the passed model name is commentable
    * 
@@ -38,6 +82,12 @@ class sfPropelActAsCommentableToolkit
     return !is_null(sfMixer::getCallable($base_class.':addComment'));
   }
 
+  /**
+   * Retrieve a commentable object
+   * 
+   * @param  string  $object_model
+   * @param  int     $object_id
+   */
   public static function retrieveCommentableObject($object_model, $object_id)
   {
     try
@@ -68,4 +118,28 @@ class sfPropelActAsCommentableToolkit
       return sfContext::getInstance()->getLogger()->log($e->getMessage());
     }
   }
+  
+  /**
+   * Retrieve commentable object instance from token
+   * 
+   * @author Nicolas Perriault
+   * @param  string  $token
+   * @return BaseObject
+   */
+  public static function retrieveFromToken($token)
+  {
+    static $session;
+    if (!isset($session))
+    {
+      $session = sfContext::getInstance()->getUser();
+    }
+    $tokens = $session->getAttribute('tokens', array(), 'sf_commentables');
+    if (array_key_exists($token, $tokens) && is_array($tokens[$token]) && class_exists($tokens[$token][0]))
+    {
+      $object_model = $tokens[$token][0];
+      $object_id    = $tokens[$token][1];
+      return sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
+    } else return null;
+  }
+  
 }

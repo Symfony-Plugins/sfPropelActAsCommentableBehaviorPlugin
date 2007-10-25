@@ -24,10 +24,10 @@ class BasesfCommentActions extends sfActions
     if ((sfContext::getInstance()->getUser()->isAuthenticated() && $this->config_user['enabled'])
          && $this->getRequest()->getMethod() == sfRequest::POST)
     {
-      $object_id = $this->getRequestParameter('sf_comment_object_id');
-      $object_model = $this->getRequestParameter('sf_comment_object_model');
+      $token = $this->getRequestParameter('sf_comment_object_token');
+      $object = sfPropelActAsCommentableToolkit::retrieveFromToken($token);
+      
       $comment = array('text' => $this->getRequestParameter('sf_comment'));
-      $object = sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
       $id_method = $this->config_user['id_method'];
       $namespace = $this->getRequestParameter('sf_comment_namespace', null);
       $this->namespace = $namespace;

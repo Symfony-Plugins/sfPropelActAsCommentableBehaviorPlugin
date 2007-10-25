@@ -380,6 +380,10 @@ at [http://lacot.org/ xavier@lacot.org]
 
 == Changelog ==
 
+=== Version 0.4 - 2007-10-25 (only available via SVN trunk for now) ===
+ * Commentable object name and id are now handled in the session and are no more
+   passed in the request
+
 === version 0.3 - 2007-10-08 ===
  * added namespaces support
  * fixed bad index names (thanks to francois)
