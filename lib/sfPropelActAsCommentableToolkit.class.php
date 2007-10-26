@@ -130,7 +130,7 @@ class sfPropelActAsCommentableToolkit
     {
       $object_model = $tokens[$token][0];
       $object_id    = $tokens[$token][1];
-      return sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
+      return self::retrieveCommentableObject($object_model, $object_id);
     } else return null;
   }
   
