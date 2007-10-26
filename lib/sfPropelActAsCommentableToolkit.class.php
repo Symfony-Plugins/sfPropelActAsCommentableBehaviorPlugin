@@ -28,11 +28,7 @@ class sfPropelActAsCommentableToolkit
    */
   public static function addTokenToSession($object_model, $object_id)
   {
-    static $session;
-    if (!isset($session))
-    {
-      $session = sfContext::getInstance()->getUser();
-    }
+    $session = sfContext::getInstance()->getUser();
     $token = self::generateToken($object_model, $object_id);
     $tokens = $session->getAttribute('tokens', array(), 'sf_commentables');
     $tokens = array($token => array($object_model, $object_id)) + $tokens;
@@ -128,11 +124,7 @@ class sfPropelActAsCommentableToolkit
    */
   public static function retrieveFromToken($token)
   {
-    static $session;
-    if (!isset($session))
-    {
-      $session = sfContext::getInstance()->getUser();
-    }
+    $session = sfContext::getInstance()->getUser();
     $tokens = $session->getAttribute('tokens', array(), 'sf_commentables');
     if (array_key_exists($token, $tokens) && is_array($tokens[$token]) && class_exists($tokens[$token][0]))
     {
