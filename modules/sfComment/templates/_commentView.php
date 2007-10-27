@@ -1,4 +1,4 @@
-<div class="sf_comment">
+<div class="sf_comment" id="sf_comment_<?php echo $comment['Id'] ?>">
   <p class="sf_comment_info">
     <span class="sf_comment_author">
       <?php if (!is_null($comment['AuthorId'])): ?>

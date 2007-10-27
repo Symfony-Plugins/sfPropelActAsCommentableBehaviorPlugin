@@ -380,9 +380,10 @@ at [http://lacot.org/ xavier@lacot.org]
 
 == Changelog ==
 
-=== Version 0.4 - 2007-10-25 (only available via SVN trunk for now) ===
+=== Version 0.4 - 2007-10-27 (only available via SVN trunk for now) ===
  * Commentable object name and id are now handled in the session and are no more
    passed in the request
+ * Added unique DOM id for each comment, in the form {{{sf_comment_$id}}}
 
 === version 0.3 - 2007-10-08 ===
  * added namespaces support
