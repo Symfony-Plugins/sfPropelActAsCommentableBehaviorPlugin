@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-if (in_array('sfComment', sfConfig::get('sf_enabled_modules')))
+if (in_array('sfComment', sfConfig::get('sf_enabled_modules', array())))
 {
   $r = sfRouting::getInstance();
   $r->prependRoute('sf_comment_authenticated', '/sfComment/authenticated_comment', array('module' => 'sfComment', 'action' => 'authenticatedComment'));
