@@ -20,7 +20,7 @@ $browser = new sfTestBrowser();
 $browser->initialize();
 
 // start tests
-$t = new lime_test(8, new lime_output_color());
+$t = new lime_test(11, new lime_output_color());
 
 
 // these tests check for the comments attachement consistency
@@ -44,6 +44,7 @@ $object2->addComment('One first comment on object2.');
 $object1_comments = $object1->getComments();
 $object2_comments = $object2->getComments();
 $t->ok((count($object1_comments) == 2) && (count($object2_comments) == 1), 'one comment is only attached to one Propel object.');
+$t->ok(count($object1_comments) == $object1->getNbComments(), 'getNbComment() permùits to retrieve one object\'s comments number.');
 
 $object3 = _create_object();
 $object3->save();

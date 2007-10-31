@@ -110,6 +110,32 @@ class sfPropelActAsCommentableBehavior
    */
   public function getComments(BaseObject $object, $options = array(), Criteria $criteria = null)
   {
+    $c = $this->getCommentsCriteria($object, $options, $criteria);
+    $comment_objects = sfCommentPeer::doSelect($c);
+    $comments = array();
+
+    foreach ($comment_objects as $comment_object)
+    {
+      $comment = $comment_object->toArray();
+      $comments[] = $comment;
+    }
+
+    return $comments;
+  }
+
+  /**
+   * Returns a criteria for comments selection. The options array
+   * can contain several options :
+   * - order : order of the comments
+   * 
+   * @param      BaseObject  $object
+   * @param      Array       $options
+   * @param      Criteria    $criteria
+   * 
+   * @return     Array
+   */
+  protected function getCommentsCriteria(BaseObject $object, $options = array(), Criteria $criteria = null)
+  {
     if ($criteria != null)
     {
       $c = clone $criteria;
@@ -142,16 +168,7 @@ class sfPropelActAsCommentableBehavior
       $c->addAscendingOrderByColumn(sfCommentPeer::ID);
     }
 
-    $comment_objects = sfCommentPeer::doSelect($c);
-    $comments = array();
-
-    foreach ($comment_objects as $comment_object)
-    {
-      $comment = $comment_object->toArray();
-      $comments[] = $comment;
-    }
-
-    return $comments;
+    return $c;
   }
 
   /**
@@ -165,7 +182,8 @@ class sfPropelActAsCommentableBehavior
    */
   public function getNbComments(BaseObject $object, $options = array(), Criteria $criteria = null)
   {
-    return count($this->getComments($object, $options, $criteria));
+    $c = $this->getCommentsCriteria($object, $options, $criteria);
+    return sfCommentPeer::doCount($c);
   }
 
   /**
