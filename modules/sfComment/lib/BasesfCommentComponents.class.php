@@ -15,7 +15,14 @@ class BasesfCommentComponents extends sfComponents
     $this->getConfig();
     $object = $this->object;
     $this->object_id = $object->getPrimaryKey();
-    $this->object_model = get_class($object);
+    if (is_callable(array($object, 'getRawValue')))
+    {
+      $this->object_model = get_class($object->getRawValue());
+    } 
+    else
+    {
+      $this->object_model = get_class($object);
+    }
     $this->token = sfPropelActAsCommentableToolkit::addTokenToSession($this->object_model, $this->object_id);
     
     if ($this->getUser()->isAuthenticated() && $this->config_user['enabled'])

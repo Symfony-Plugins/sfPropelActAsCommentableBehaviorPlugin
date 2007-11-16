@@ -21,7 +21,8 @@ class BasesfCommentActions extends sfActions
   {
     $this->getConfig();
 
-    if ((sfContext::getInstance()->getUser()->isAuthenticated() && $this->config_user['enabled'])
+    if ((sfContext::getInstance()->getUser()->isAuthenticated() 
+         && $this->config_user['enabled'])
          && $this->getRequest()->getMethod() == sfRequest::POST)
     {
       $token = $this->getRequestParameter('sf_comment_object_token');
