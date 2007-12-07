@@ -1,3 +1,4 @@
+<?php use_helper('Date'); ?>
 <div class="sf_comment" id="sf_comment_<?php echo $comment['Id'] ?>">
   <p class="sf_comment_info">
     <span class="sf_comment_author">

@@ -1,6 +1,8 @@
-<?php use_helper('Form') ?>
-<?php use_helper('Validation') ?>
-<?php use_helper('Javascript') ?>
+<?php use_helper('Form'); ?>
+<?php use_helper('Validation'); ?>
+<?php use_helper('Javascript'); ?>
+<?php use_helper('I18N'); ?>
+<?php use_helper('Date'); ?>
 
 <?php if ( ($sf_user->isAuthenticated() && $config_user['enabled'])
           || $config_anonymous['enabled']): ?>
