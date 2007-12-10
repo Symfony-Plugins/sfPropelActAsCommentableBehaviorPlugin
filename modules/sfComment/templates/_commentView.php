@@ -10,11 +10,7 @@
         $peer = sprintf('%sPeer', $class);
         $author = call_user_func(array($peer, 'retrieveByPk'), $comment['AuthorId']);
         echo $author->$toString();
-        ?>
-      <?php else: ?>
-        <?php echo $comment['AuthorName'] ?>
-      <?php endif; ?>
-    </span>,
+        ?><?php else: ?><?php echo $comment['AuthorName'] ?><?php endif; ?></span>,
     <?php echo __('%1% ago', array('%1%' => distance_of_time_in_words(strtotime($comment['CreatedAt'])))) ?>
   </p>
   <p class="sf_comment_text">

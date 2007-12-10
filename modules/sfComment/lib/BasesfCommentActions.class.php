@@ -38,7 +38,18 @@ class BasesfCommentActions extends sfActions
       $comment['author_id'] = sfContext::getInstance()->getUser()->$id_method();
       $comment['namespace'] = $namespace;
 
-      $object->addComment($comment);
+      foreach (sfMixer::getCallables('sfCommentActions:addComment:pre') as $callable)
+      {
+        call_user_func($callable, $comment, $object);
+      }
+
+      $comment_object = $object->addComment($comment);
+
+      foreach (sfMixer::getCallables('sfCommentActions:addComment:post') as $callable)
+      {
+        call_user_func($callable, $comment_object, $object);
+      }
+
       $this->object = $object;
 
       if (!$this->getContext()->getRequest()->isXmlHttpRequest())
@@ -59,8 +70,8 @@ class BasesfCommentActions extends sfActions
 
     if ($this->config_anonymous['enabled'] && $this->getRequest()->getMethod() == sfRequest::POST)
     {
-      $object_id = $this->getRequestParameter('sf_comment_object_id');
-      $object_model = $this->getRequestParameter('sf_comment_object_model');
+      $token = $this->getRequestParameter('sf_comment_object_token');
+      $object = sfPropelActAsCommentableToolkit::retrieveFromToken($token);
       $namespace = $this->getRequestParameter('sf_comment_namespace', null);
       $this->namespace = $namespace;
 
@@ -70,8 +81,19 @@ class BasesfCommentActions extends sfActions
                        'author_name'  => $this->getRequestParameter('sf_comment_name'),
                        'author_email' => $this->getRequestParameter('sf_comment_email'), 
                        'namespace'    => $namespace);
-      $object = sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
-      $object->addComment($comment);
+
+      foreach (sfMixer::getCallables('sfCommentActions:addComment:pre') as $callable)
+      {
+        call_user_func($callable, $comment, $object);
+      }
+
+      $comment_object = $object->addComment($comment);
+
+      foreach (sfMixer::getCallables('sfCommentActions:addComment:post') as $callable)
+      {
+        call_user_func($callable, $comment_object, $object);
+      }
+
       $this->object = $object;
 
       if (!$this->getContext()->getRequest()->isXmlHttpRequest())
@@ -88,11 +110,9 @@ class BasesfCommentActions extends sfActions
    */
   public function executeCommentForm()
   {
-    $object_id = $this->getRequestParameter('sf_comment_object_id');
-    $object_model = $this->getRequestParameter('sf_comment_object_model');
+    $token = $this->getRequestParameter('sf_comment_object_token');
+    $this->object = sfPropelActAsCommentableToolkit::retrieveFromToken($token);
     $this->namespace = $this->getRequestParameter('sf_comment_namespace', null);
-
-    $this->object = sfPropelActAsCommentableToolkit::retrieveCommentableObject($object_model, $object_id);
   }
 
   protected function getConfig()

@@ -13,16 +13,18 @@ class BasesfCommentComponents extends sfComponents
   {
     sfContext::getInstance()->getResponse()->addStylesheet('/sfPropelActAsCommentableBehaviorPlugin/css/sf_comment');
     $this->getConfig();
-    $object = $this->object;
-    $this->object_id = $object->getPrimaryKey();
-    if (is_callable(array($object, 'getRawValue')))
+
+    if ($this->object instanceof sfOutputEscaperObjectDecorator)
     {
-      $this->object_model = get_class($object->getRawValue());
-    } 
+      $object = $this->object->getRawValue();
+    }
     else
     {
-      $this->object_model = get_class($object);
+      $object = $this->object;
     }
+
+    $this->object_model = get_class($object);
+    $this->object_id = $object->getPrimaryKey();
     $this->token = sfPropelActAsCommentableToolkit::addTokenToSession($this->object_model, $this->object_id);
     
     if ($this->getUser()->isAuthenticated() && $this->config_user['enabled'])

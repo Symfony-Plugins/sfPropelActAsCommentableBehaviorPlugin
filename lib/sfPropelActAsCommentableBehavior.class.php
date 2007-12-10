@@ -64,6 +64,7 @@ class sfPropelActAsCommentableBehavior
           $comment_object->setCommentableId($object->getPrimaryKey());
           $comment_object->setCommentableModel(get_class($object));
           $comment_object->save();
+          return $comment_object;
         }
       }
     }
