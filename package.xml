@@ -17,8 +17,8 @@
   <api>0.4.0</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license uri="http://www.symfony-project.com/license">MIT license</license>
  <notes>
@@ -131,8 +131,8 @@
     <api>0.4.0</api>
    </version>
    <stability>
-    <release>stable</release>
-    <api>stable</api>
+    <release>beta</release>
+    <api>beta</api>
    </stability>
    <date>2007-12-10</date>
    <license uri="http://www.symfony-project.com/license">MIT license</license>
