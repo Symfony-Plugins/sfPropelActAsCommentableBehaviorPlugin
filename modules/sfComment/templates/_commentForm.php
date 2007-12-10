@@ -83,9 +83,9 @@
                            array('update'   => array('success' => 'sf_comment_list', 'failure' => 'sf_comment_form'),
                                  'url'      => 'sfComment/'.$action,
                                  'loading'  => "Element.show('sf_comment_ajax_indicator')",
-                                 'complete' => "Element.hide('sf_comment_ajax_indicator');Element.scrollTo('sf_comment_list')",
+                                 'success'  => "Element.hide('sf_comment_ajax_indicator');Element.scrollTo('sf_comment_list')",
                                  'script'   => true),
-                           array('class' => 'submit'));
+                           array('class'    => 'submit'));
       ?>
       <noscript>
         <?php echo submit_tag(__('Post this comment'), array('class' => 'submit')) ?>
