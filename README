@@ -380,10 +380,15 @@ at [http://lacot.org/ xavier@lacot.org]
 
 == Changelog ==
 
-=== Version 0.4 - 2007-10-27 (only available via SVN trunk for now) ===
- * Commentable object name and id are now handled in the session and are no more
-   passed in the request
- * Added unique DOM id for each comment, in the form {{{sf_comment_$id}}}
+=== Version 0.4 - 2007-12-10 ===
+ * compatibility with escaping=both mode
+ * Added unique DOM id for each comment, in the form {{{sf_comment_$id}}} 
+ (Nicolas Perriault)
+ * use a session token instead of passing the object id and model in the request 
+ (Nicolas Perriault)
+ * bugfixes, based on a patch from Michael Nolan (closes #2595):
+   * fix anonymous posting (use the token)
+   * pre and post addition hooks
 
 === version 0.3 - 2007-10-08 ===
  * added namespaces support

@@ -10,21 +10,26 @@
   <email>xavier@lacot.org</email>
   <active>yes</active>
  </lead>
- <date>2007-10-08</date>
- <time>21:06:12</time>
+ <date>2007-12-10</date>
+ <time>12:40:25</time>
  <version>
-  <release>0.3.0</release>
-  <api>0.3.0</api>
+  <release>0.4.0</release>
+  <api>0.4.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.symfony-project.com/license">MIT license</license>
  <notes>
- * added namespaces support
- * fixed bad index names (thanks to francois)
- * made getComments() more flexible (closes #2312, thanks to FrankStelzer)
+ * compatibility with escaping=both mode
+ * Added unique DOM id for each comment, in the form {{{sf_comment_$id}}} 
+ (Nicolas Perriault)
+ * use a session token instead of passing the object id and model in the request 
+ (Nicolas Perriault)
+ * bugfixes, based on a patch from Michael Nolan (closes #2595):
+   * fix anonymous posting (use the token)
+   * pre and post addition hooks
  </notes>
  <contents>
   <dir name="/">
@@ -122,6 +127,27 @@
  <changelog>
   <release>
    <version>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-12-10</date>
+   <license uri="http://www.symfony-project.com/license">MIT license</license>
+   <notes>
+ * compatibility with escaping=both mode
+ * Added unique DOM id for each comment, in the form {{{sf_comment_$id}}} 
+ (Nicolas Perriault)
+ * use a session token instead of passing the object id and model in the request 
+ (Nicolas Perriault)
+ * bugfixes, based on a patch from Michael Nolan (closes #2595):
+   * fix anonymous posting (use the token)
+   * pre and post addition hooks</notes>
+  </release>
+  <release>
+   <version>
     <release>0.3.0</release>
     <api>0.3.0</api>
    </version>
@@ -131,7 +157,7 @@
    </stability>
    <date>2007-10-08</date>
    <license uri="http://www.symfony-project.com/license">MIT license</license>
-   <notes>* added namespaces support
+   <notes> * added namespaces support
  * fixed bad index names (thanks to francois)
  * made getComments() more flexible (closes #2312, thanks to FrankStelzer)</notes>
   </release>
@@ -146,7 +172,7 @@
    </stability>
    <date>2007-09-26</date>
    <license uri="http://www.symfony-project.com/license">MIT license</license>
-   <notes>* added a Symfony module for posting and displaying comments
+   <notes> * added a Symfony module for posting and displaying comments
    * ajax support
    * authenticated users support
    * form customization
