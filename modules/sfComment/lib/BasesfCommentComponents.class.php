@@ -9,6 +9,11 @@
  */
 class BasesfCommentComponents extends sfComponents
 {
+  protected
+    $config,
+    $config_user,
+    $config_anonymous;
+
   public function executeCommentForm()
   {
     sfContext::getInstance()->getResponse()->addStylesheet('/sfPropelActAsCommentableBehaviorPlugin/css/sf_comment');

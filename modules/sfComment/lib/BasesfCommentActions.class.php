@@ -9,7 +9,7 @@
  */
 class BasesfCommentActions extends sfActions
 {
-  private
+  protected
     $config,
     $config_user,
     $config_anonymous;
