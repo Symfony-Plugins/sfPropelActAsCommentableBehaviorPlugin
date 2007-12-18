@@ -9,11 +9,6 @@
  */
 class BasesfCommentActions extends sfActions
 {
-  protected
-    $config,
-    $config_user,
-    $config_anonymous;
-
   /**
    * Saves a comment, for an authentified user
    */
