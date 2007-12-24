@@ -1,3 +1,4 @@
+<?php use_helper('I18N'); ?>
 <div id="sf_comment_list">
   <?php if (count($comments) > 0): ?>
     <?php foreach ($comments as $comment): ?>
