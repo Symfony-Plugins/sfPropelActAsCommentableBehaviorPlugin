@@ -66,7 +66,7 @@ class sfPropelActAsCommentableToolkit
 
     if (!is_string($model))
     {
-      throw new Exception('The param passed to the metod isTaggable must be a string.');
+      throw new Exception('The param passed to the method isCommentable must be a string.');
     }
 
     if (!class_exists($model))
