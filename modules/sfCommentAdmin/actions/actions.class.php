@@ -9,5 +9,15 @@
  * @link       http://trac.symfony-project.com/trac/wiki/sfPropelActAsCommentableBehaviorPlugin
  */
 class sfCommentAdminActions extends autoSfCommentAdminActions
-{ 
+{
+  protected function updatesfCommentFromRequest()
+  {
+    parent::updatesfCommentFromRequest();
+    $sf_comment = $this->getRequestParameter('sf_comment');
+
+    if (isset($sf_comment['author_id']) && $sf_comment['author_id'] == '')
+    {
+      $this->sf_comment->setAuthorId(null);
+    }
+  }
 }
