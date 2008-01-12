@@ -9,6 +9,17 @@
  */
 class BasesfCommentComponents extends sfComponents
 {
+  public function executeAuthor()
+  {
+    $this->getConfig();
+    $class = $this->config_user['class'];
+    $toString = $this->config_user['toString'];
+    $peer = sprintf('%sPeer', $class);
+    $author = call_user_func(array($peer, 'retrieveByPk'), $this->author_id);
+    $this->author = (!is_null($author)) ? $author->$toString() : '';
+  }
+  
+  
   public function executeCommentForm()
   {
     sfContext::getInstance()->getResponse()->addStylesheet('/sfPropelActAsCommentableBehaviorPlugin/css/sf_comment');

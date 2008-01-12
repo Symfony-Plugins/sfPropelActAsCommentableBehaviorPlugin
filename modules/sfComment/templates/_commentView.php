@@ -4,13 +4,11 @@
   <p class="sf_comment_info">
     <span class="sf_comment_author">
       <?php if (!is_null($comment['AuthorId'])): ?>
-        <?php
-        $user_config = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_user');
-        $class = $user_config['class'];
-        $toString = $user_config['toString'];
-        $peer = sprintf('%sPeer', $class);
-        $author = call_user_func(array($peer, 'retrieveByPk'), $comment['AuthorId']);
-        echo $author->$toString();
+        <?php 
+        include_component('sfComment', 
+                          'author', 
+                          array('author_id'    => $comment['AuthorId'], 
+                                'sf_cache_key' => $comment['AuthorId']));
         ?><?php else: ?><?php echo $comment['AuthorName'] ?><?php endif; ?></span>,
     <?php echo __('%1% ago', array('%1%' => distance_of_time_in_words(strtotime($comment['CreatedAt'])))) ?>
   </p>
