@@ -35,6 +35,11 @@ class BasesfCommentActions extends sfActions
 
       foreach (sfMixer::getCallables('sfCommentActions:addComment:pre') as $callable)
       {
+        if (false !== strpos($callable, '::'))
+        {
+          $callable = explode('::', $callable);
+        }
+
         call_user_func($callable, $comment, $object);
       }
 
@@ -42,6 +47,11 @@ class BasesfCommentActions extends sfActions
 
       foreach (sfMixer::getCallables('sfCommentActions:addComment:post') as $callable)
       {
+        if (false !== strpos($callable, '::'))
+        {
+          $callable = explode('::', $callable);
+        }
+
         call_user_func($callable, $comment_object, $object);
       }
 
