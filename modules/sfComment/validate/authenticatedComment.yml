@@ -41,4 +41,4 @@ fields:
 fillin:
   enabled:            true
   param:
-    name:             sf_comment_form
+    id:               sf_comment_form
