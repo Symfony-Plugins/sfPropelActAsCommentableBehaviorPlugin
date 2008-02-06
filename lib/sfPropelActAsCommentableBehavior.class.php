@@ -1,9 +1,9 @@
 <?php
 /*
  * This file is part of the sfPropelActAsCommentableBehavior package.
- * 
+ *
  * (c) 2007 Xavier Lacot <xavier@lacot.org>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -11,11 +11,11 @@
 /*
  * This behavior permits to attach comments to Propel objects. Some more bits
  * about the philosophy of the stuff:
- * 
+ *
  * - commentable objects must have a primary key
  * - comments can only be attached on objects that have already been saved
  * - comments are saved when applied
- * 
+ *
  * @author   Xavier Lacot <xavier@lacot.org>
  * @see      http://www.symfony-project.com/trac/wiki/sfPropelActAsCommentableBehaviorPlugin
  */
@@ -27,7 +27,7 @@ class sfPropelActAsCommentableBehavior
    * array (in which each element represents one of the comment properties), or
    * an array of associative arrays. In this case, it adds all the comments to
    * the object.
-   * 
+   *
    * @param      BaseObject  $object
    * @param      array       $comment
    */
@@ -56,7 +56,7 @@ class sfPropelActAsCommentableBehavior
 
           if (!isset($comment['namespace']))
           {
-            $comment['namespace'] = '';
+            $comment['namespace'] = null;
           }
 
           $comment_object = new sfComment();
@@ -64,6 +64,31 @@ class sfPropelActAsCommentableBehavior
           $comment_object->setCommentableId($object->getPrimaryKey());
           $comment_object->setCommentableModel(get_class($object));
           $comment_object->save();
+
+          $count_options = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_count',
+                                         array('method'    => 'setSfCommentCount',
+                                               'enabled'   => true,
+                                               'namespace' => false));
+
+          $comment_count = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_count_method', 'setSfCommentCount');
+
+          if ($count_options['enabled']
+              && is_callable(get_class($object), $count_options['method']))
+          {
+            if (($count_options['namespace'] !== false)
+                && $comment['namespace'] === $count_options['namespace'])
+            {
+              $options = array('namespace' => $count_options['namespace']);
+              call_user_func(array($object, $comment_count), $object->getNbComments($options));
+            }
+            elseif (false === $count_options['namespace'])
+            {
+              call_user_func(array($object, $comment_count), $object->getNbComments());
+            }
+
+            $object->save();
+          }
+
           return $comment_object;
         }
       }
@@ -80,7 +105,7 @@ class sfPropelActAsCommentableBehavior
 
   /**
    * Deletes all the comments attached to the object
-   * 
+   *
    * @param      BaseObject  $object
    * @return     boolean
    */
@@ -102,11 +127,11 @@ class sfPropelActAsCommentableBehavior
    * Returns the list of the comments attached to the object. The options array
    * can contain several options :
    * - order : order of the comments
-   * 
+   *
    * @param      BaseObject  $object
    * @param      Array       $options
    * @param      Criteria    $criteria
-   * 
+   *
    * @return     Array
    */
   public function getComments(BaseObject $object, $options = array(), Criteria $criteria = null)
@@ -128,11 +153,11 @@ class sfPropelActAsCommentableBehavior
    * Returns a criteria for comments selection. The options array
    * can contain several options :
    * - order : order of the comments
-   * 
+   *
    * @param      BaseObject  $object
    * @param      Array       $options
    * @param      Criteria    $criteria
-   * 
+   *
    * @return     Array
    */
   protected function getCommentsCriteria(BaseObject $object, $options = array(), Criteria $criteria = null)
@@ -155,7 +180,7 @@ class sfPropelActAsCommentableBehavior
     }
     else
     {
-      $c->add(sfCommentPeer::NAMESPACE, '');
+      //$c->add(sfCommentPeer::NAMESPACE, '');
     }
 
     if (isset($options['order']) && ($options['order'] == 'desc'))
@@ -174,11 +199,11 @@ class sfPropelActAsCommentableBehavior
 
   /**
    * Returns the number of the comments attached to the object.
-   * 
+   *
    * @param      BaseObject  $object
    * @param      Array       $options
    * @param      Criteria    $criteria
-   * 
+   *
    * @return     integer
    */
   public function getNbComments(BaseObject $object, $options = array(), Criteria $criteria = null)
@@ -189,7 +214,7 @@ class sfPropelActAsCommentableBehavior
 
   /**
    * Removes one comment from the object.
-   * 
+   *
    * @param      BaseObject  $object
    */
   public function removeComment(BaseObject $object, $comment_id)

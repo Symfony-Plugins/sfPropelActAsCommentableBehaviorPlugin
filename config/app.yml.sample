@@ -20,6 +20,10 @@ all:
       toString:       __toString
       save_name:      false
     namespaces:
-      frontend:       -
+      frontend:       
       backend:        administrator
-    use_ajax:         true
+    use_ajax:         true       
+    count:
+      enabled:        true
+      method:         setSfCommentCount
+      namespace:      frontend
