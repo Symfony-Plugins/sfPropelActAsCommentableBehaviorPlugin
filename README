@@ -72,6 +72,7 @@ complete the following steps:
 all:
   sfPropelActAsCommentableBehaviorPlugin:
     use_ajax:         true
+    css:              true
     anonymous:
       enabled:        true
       layout:
@@ -105,6 +106,7 @@ the form, depending on whether the user is authenticated or not. In the app.yml
 file, you can tweak the default setup:
  * the '''use_ajax''' rule indicates whether or not the comment system must use 
  ajax.
+ * the '''css''' rule indicates whether or not to load the supplied styles.
  * the '''anonymous''' rules will tweak the way the plugin handles anonymous 
  comments:
    * '''enabled''' : enables or disables anonymous comments.
@@ -378,6 +380,7 @@ back-office.
 all:
   sfPropelActAsCommentableBehaviorPlugin:
     use_ajax:         true
+    css:              true
     anonymous:
       enabled:        true
       layout:

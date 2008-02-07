@@ -22,7 +22,8 @@ all:
     namespaces:
       frontend:       
       backend:        administrator
-    use_ajax:         true       
+    use_ajax:         true
+    css:              false
     count:
       enabled:        true
       method:         setSfCommentCount

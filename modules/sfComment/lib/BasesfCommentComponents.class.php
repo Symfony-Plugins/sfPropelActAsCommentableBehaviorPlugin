@@ -1,9 +1,9 @@
 <?php
 /**
  * sfPropelActAsCommentableBehaviorPlugin base components.
- * 
+ *
  * @package    plugins
- * @subpackage comment 
+ * @subpackage comment
  * @author     Xavier Lacot <xavier@lacot.org>
  * @link       http://trac.symfony-project.com/trac/wiki/sfPropelActAsCommentableBehaviorPlugin
  */
@@ -18,12 +18,16 @@ class BasesfCommentComponents extends sfComponents
     $author = call_user_func(array($peer, 'retrieveByPk'), $this->author_id);
     $this->author = (!is_null($author)) ? $author->$toString() : '';
   }
-  
-  
+
+
   public function executeCommentForm()
   {
-    sfContext::getInstance()->getResponse()->addStylesheet('/sfPropelActAsCommentableBehaviorPlugin/css/sf_comment');
     $this->getConfig();
+
+    if ($this->config['css'])
+    {
+      sfContext::getInstance()->getResponse()->addStylesheet('/sfPropelActAsCommentableBehaviorPlugin/css/sf_comment');
+    }
 
     if ($this->object instanceof sfOutputEscaperObjectDecorator)
     {
@@ -37,7 +41,7 @@ class BasesfCommentComponents extends sfComponents
     $this->object_model = get_class($object);
     $this->object_id = $object->getPrimaryKey();
     $this->token = sfPropelActAsCommentableToolkit::addTokenToSession($this->object_model, $this->object_id);
-    
+
     if ($this->getUser()->isAuthenticated() && $this->config_user['enabled'])
     {
       $this->action = 'authenticated_comment';
@@ -82,24 +86,25 @@ class BasesfCommentComponents extends sfComponents
 
   protected function getConfig()
   {
-    $config_anonymous = array('enabled' => true, 
-                              'layout'  => array('name' => 'required', 
-                                                 'email' => 'required', 
-                                                 'title' => 'optional', 
-                                                 'comment' => 'required'), 
+    $config_anonymous = array('enabled' => true,
+                              'layout'  => array('name' => 'required',
+                                                 'email' => 'required',
+                                                 'title' => 'optional',
+                                                 'comment' => 'required'),
                               'name'    => 'Anonymous User');
-    $config_user = array('enabled'   => true, 
-                         'layout'    => array('title' => 'optional', 
-                                              'comment' => 'required'), 
-                         'table'     => 'sf_guard_user', 
-                         'id'        => 'id', 
-                         'class'     => 'sfGuardUser', 
-                         'id_method' => 'getUserId', 
-                         'toString'  => 'toString', 
+    $config_user = array('enabled'   => true,
+                         'layout'    => array('title' => 'optional',
+                                              'comment' => 'required'),
+                         'table'     => 'sf_guard_user',
+                         'id'        => 'id',
+                         'class'     => 'sfGuardUser',
+                         'id_method' => 'getUserId',
+                         'toString'  => 'toString',
                          'save_name' => false);
     $config = array('user'             => $config_user,
                     'anonymous'        => $config_anonymous,
                     'use_ajax'         => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_ajax', false),
+                    'css'              => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_css', true),
                     'namespaces'       => array());
 
     $this->config = $config;
