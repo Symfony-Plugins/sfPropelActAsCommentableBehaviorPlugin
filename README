@@ -39,7 +39,7 @@ module for enabling comments in your application in less than 3 minutes.
      propel.builder.addBehaviors = true
    }}}
 
- * edit the classes that you want to make taggable. For instance, for lib/model/Post.php:
+ * edit the classes that you want to make commentable. For instance, for lib/model/Post.php:
    {{{
    #!php
    <?php
@@ -343,7 +343,7 @@ back-office.
      propel.builder.addBehaviors = true
    }}}
 
- * edit the classes that you want to make taggable. For instance, for lib/model/Post.php:
+ * edit the classes that you want to make commentable. For instance, for lib/model/Post.php:
    {{{
    #!php
    <?php
