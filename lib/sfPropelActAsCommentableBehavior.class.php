@@ -65,12 +65,11 @@ class sfPropelActAsCommentableBehavior
           $comment_object->setCommentableModel(get_class($object));
           $comment_object->save();
 
-          $count_options = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_count',
-                                         array('method'    => 'setSfCommentCount',
-                                               'enabled'   => true,
-                                               'namespace' => false));
-
-          $comment_count = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_count_method', 'setSfCommentCount');
+          $count_options = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_count', array());
+          $count_options = array_merge(array('method'    => 'setSfCommentCount',
+                                             'enabled'   => true,
+                                             'namespace' => false),
+                                       $count_options);
 
           if ($count_options['enabled']
               && is_callable(get_class($object), $count_options['method']))
@@ -79,11 +78,13 @@ class sfPropelActAsCommentableBehavior
                 && $comment['namespace'] === $count_options['namespace'])
             {
               $options = array('namespace' => $count_options['namespace']);
-              call_user_func(array($object, $comment_count), $object->getNbComments($options));
+              call_user_func(array($object, $count_options['method']),
+                             $object->getNbComments($options));
             }
             elseif (false === $count_options['namespace'])
             {
-              call_user_func(array($object, $comment_count), $object->getNbComments());
+              call_user_func(array($object, $count_options['method']),
+                             $object->getNbComments());
             }
 
             $object->save();
