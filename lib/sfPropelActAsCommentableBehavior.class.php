@@ -72,7 +72,7 @@ class sfPropelActAsCommentableBehavior
                                        $count_options);
 
           if ($count_options['enabled']
-              && is_callable(get_class($object), $count_options['method']))
+              && is_callable(array(get_class($object), $count_options['method'])))
           {
             if (($count_options['namespace'] !== false)
                 && $comment['namespace'] === $count_options['namespace'])
