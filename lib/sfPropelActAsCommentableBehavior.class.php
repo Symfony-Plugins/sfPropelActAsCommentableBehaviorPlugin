@@ -79,12 +79,12 @@ class sfPropelActAsCommentableBehavior
             {
               $options = array('namespace' => $count_options['namespace']);
               call_user_func(array($object, $count_options['method']),
-                             $object->getNbComments($options));
+                             $this->getNbComments($object, $options));
             }
             elseif (false === $count_options['namespace'])
             {
               call_user_func(array($object, $count_options['method']),
-                             $object->getNbComments());
+                             $this->getNbComments($object));
             }
 
             $object->save();
