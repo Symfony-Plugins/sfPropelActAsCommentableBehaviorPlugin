@@ -46,7 +46,22 @@ class sfPropelActAsCommentableToolkit
    */
   public static function generateToken($object_model, $object_id)
   {
-    return md5(sprintf('%s-%s-%s', $object_model, $object_id, sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_salt', 'c0mm3nt4bl3')));
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+    {
+      // the client uses a proxy
+      $ip_adress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else
+    {
+      $ip_adress = $_SERVER['REMOTE_ADDR'];
+    }
+  
+    return md5(sprintf('%s-%s-%s-%s', 
+                       $ip_adress,
+                       $object_model, 
+                       $object_id, 
+                       sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_salt', 
+                                     'c0mm3nt4bl3')));
   }
 
   /**
@@ -131,8 +146,17 @@ class sfPropelActAsCommentableToolkit
         && class_exists($tokens[$token][0]))
     {
       $object_model = $tokens[$token][0];
-      $object_id    = $tokens[$token][1];
-      return self::retrieveCommentableObject($object_model, $object_id);
-    } else return null;
+      $object_id = $tokens[$token][1];
+
+      $new_token = self::generateToken($object_model, $object_id);
+      
+      // check is token has changed or not (ie., if the user's IP has changed)
+      if ($token == $new_$token)
+      {
+        return self::retrieveCommentableObject($object_model, $object_id);
+      }
+    }
+
+    return null;
   }
 }

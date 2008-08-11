@@ -22,6 +22,7 @@ class BasesfCommentActions extends sfActions
     {
       $token = $this->getRequestParameter('sf_comment_object_token');
       $object = sfPropelActAsCommentableToolkit::retrieveFromToken($token);
+      $this->forward404Unless(!is_null($object));
 
       $comment = array('title' => $this->getRequestParameter('sf_comment_title'),
                        'text'  => $this->getRequestParameter('sf_comment'));
@@ -78,6 +79,7 @@ class BasesfCommentActions extends sfActions
     {
       $token = $this->getRequestParameter('sf_comment_object_token');
       $object = sfPropelActAsCommentableToolkit::retrieveFromToken($token);
+      $this->forward404Unless(!is_null($object));
       $namespace = $this->getRequestParameter('sf_comment_namespace', null);
       $this->namespace = $namespace;
 
