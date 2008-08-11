@@ -35,6 +35,6 @@ class sfPropelActAsCommentableStripper
     }
 
     $purifier = new HTMLPurifier($config);
-    return $purifier->purify($text);
+    return str_replace('<a href', '<a rel="nofollow" href', $purifier->purify($text));
   }
 }
