@@ -2,7 +2,7 @@
 /*
  * This file is part of the sfPropelActAsCommentableBehavior package.
  *
- * (c) 2007 Xavier Lacot <xavier@lacot.org>
+ * (c) 2008 Xavier Lacot <xavier@lacot.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -51,7 +51,17 @@ class sfPropelActAsCommentableBehavior
       {
         if (strlen($comment['text']) > 0)
         {
-          $comment['text'] = strip_tags($comment['text']);
+          if (isset($comment['title']))
+          {
+            $comment['title'] = strip_tags($comment['title']);
+          }
+
+          if (isset($comment['title']))
+          {
+            $comment['author_name']  = strip_tags($comment['author_name']);
+          }
+
+          $comment['text'] = sfPropelActAsCommentableStripper::clean($comment['text']);
           $comment['created_at'] = time();
 
           if (!isset($comment['namespace']))

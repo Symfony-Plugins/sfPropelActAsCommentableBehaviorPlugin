@@ -19,6 +19,7 @@
     author_id:         integer
     author_name:       varchar(50)
     author_email:      varchar(100)
+    author_website:    varchar(255)
     created_at:
     _indexes:
       comments_index:  [namespace, commentable_model, commentable_id]

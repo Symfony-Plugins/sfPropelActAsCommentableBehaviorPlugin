@@ -1,12 +1,15 @@
 <?php
-$config_user = array('enabled'   => true, 
-                     'layout'    => array('title' => 'optionnal', 
-                                          'comment' => 'required'), 
-                     'table'     => 'sf_guard_user', 
-                     'id'        => 'id', 
-                     'class'     => 'sfGuardUser', 
-                     'id_method' => 'getUserId', 
-                     'toString'  => '__toString', 
+$config_user = array('enabled'   => true,
+                     'layout'    => array('title'   => 'optionnal',
+                                          'email'   => 'optionnal',
+                                          'name'    => 'optionnal',
+                                          'website' => 'optionnal',
+                                          'comment' => 'required'),
+                     'table'     => 'sf_guard_user',
+                     'id'        => 'id',
+                     'class'     => 'sfGuardUser',
+                     'id_method' => 'getUserId',
+                     'toString'  => '__toString',
                      'save_name' => false);
 
 $config_user = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_user', $config_user);
@@ -22,10 +25,16 @@ fields:
 <?php if (isset($config_user['layout']['email']) && ($config_user['layout']['email'] == 'required')): ?>
   sf_comment_email:
     required:
-      msg:             Your email is required
+      msg:             Your email is required (it won't be published)
     sfEmailValidator:
       strict:          true
       email_error:     This email address is invalid
+<?php endif; ?>
+
+<?php if (isset($config_anonymous['layout']['website'])): ?>
+  sf_comment_website:
+    sfUrlValidator:
+      url_error:       This url is invalid
 <?php endif; ?>
 
 <?php if (isset($config_user['layout']['title']) && ($config_user['layout']['title'] == 'required')): ?>
@@ -42,3 +51,4 @@ fillin:
   enabled:            true
   param:
     id:               sf_comment_form
+    content_type:     xhtml

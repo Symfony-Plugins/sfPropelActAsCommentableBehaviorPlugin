@@ -1,9 +1,9 @@
 <?php
 /**
  * sfPropelActAsCommentableBehaviorPlugin base actions.
- * 
+ *
  * @package    plugins
- * @subpackage comment 
+ * @subpackage comment
  * @author     Xavier Lacot <xavier@lacot.org>
  * @link       http://trac.symfony-project.com/trac/wiki/sfPropelActAsCommentableBehaviorPlugin
  */
@@ -16,14 +16,15 @@ class BasesfCommentActions extends sfActions
   {
     $this->getConfig();
 
-    if ((sfContext::getInstance()->getUser()->isAuthenticated() 
+    if ((sfContext::getInstance()->getUser()->isAuthenticated()
          && $this->config_user['enabled'])
          && $this->getRequest()->getMethod() == sfRequest::POST)
     {
       $token = $this->getRequestParameter('sf_comment_object_token');
       $object = sfPropelActAsCommentableToolkit::retrieveFromToken($token);
-      
-      $comment = array('text' => $this->getRequestParameter('sf_comment'));
+
+      $comment = array('title' => $this->getRequestParameter('sf_comment_title'),
+                       'text'  => $this->getRequestParameter('sf_comment'));
       $id_method = $this->config_user['id_method'];
       $namespace = $this->getRequestParameter('sf_comment_namespace', null);
       $this->namespace = $namespace;
@@ -82,10 +83,12 @@ class BasesfCommentActions extends sfActions
 
       $this->validateNamespace($namespace);
 
-      $comment = array('text'         => $this->getRequestParameter('sf_comment'),
-                       'author_name'  => $this->getRequestParameter('sf_comment_name'),
-                       'author_email' => $this->getRequestParameter('sf_comment_email'), 
-                       'namespace'    => $namespace);
+      $comment = array('title'          => $this->getRequestParameter('sf_comment_title'),
+                       'text'           => $this->getRequestParameter('sf_comment'),
+                       'author_name'    => $this->getRequestParameter('sf_comment_name'),
+                       'author_email'   => $this->getRequestParameter('sf_comment_email'),
+                       'author_website' => $this->getRequestParameter('sf_comment_website'),
+                       'namespace'      => $namespace);
 
       foreach (sfMixer::getCallables('sfCommentActions:addComment:pre') as $callable)
       {
@@ -106,6 +109,10 @@ class BasesfCommentActions extends sfActions
         $this->redirect($this->getRequestParameter('sf_comment_referer'));
       }
     }
+    else
+    {
+      $this->forward404();
+    }
 
     $this->setTemplate('comment');
   }
@@ -122,20 +129,21 @@ class BasesfCommentActions extends sfActions
 
   protected function getConfig()
   {
-    $config_anonymous = array('enabled' => true, 
-                              'layout'  => array('name' => 'required', 
-                                                 'email' => 'required', 
-                                                 'title' => 'optional', 
-                                                 'comment' => 'required'), 
+    $config_anonymous = array('enabled' => true,
+                              'layout'  => array('name'    => 'required',
+                                                 'email'   => 'required',
+                                                 'title'   => 'optional',
+                                                 'website' => 'optional',
+                                                 'comment' => 'required'),
                               'name'    => 'Anonymous User');
-    $config_user = array('enabled'   => true, 
-                         'layout'    => array('title' => 'optional', 
-                                              'comment' => 'required'), 
-                         'table'     => 'sf_guard_user', 
-                         'id'        => 'id', 
-                         'class'     => 'sfGuardUser', 
-                         'id_method' => 'getUserId', 
-                         'toString'  => 'toString', 
+    $config_user = array('enabled'   => true,
+                         'layout'    => array('title' => 'optional',
+                                              'comment' => 'required'),
+                         'table'     => 'sf_guard_user',
+                         'id'        => 'id',
+                         'class'     => 'sfGuardUser',
+                         'id_method' => 'getUserId',
+                         'toString'  => 'toString',
                          'save_name' => false);
 
     $this->config_anonymous = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_anonymous', $config_anonymous);

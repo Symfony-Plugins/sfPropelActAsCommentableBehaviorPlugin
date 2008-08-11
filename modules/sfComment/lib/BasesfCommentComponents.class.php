@@ -11,12 +11,19 @@ class BasesfCommentComponents extends sfComponents
 {
   public function executeAuthor()
   {
-    $this->getConfig();
-    $class = $this->config_user['class'];
-    $toString = $this->config_user['toString'];
-    $peer = sprintf('%sPeer', $class);
-    $author = call_user_func(array($peer, 'retrieveByPk'), $this->author_id);
-    $this->author = (!is_null($author)) ? $author->$toString() : '';
+    if (isset($this->author_id))
+    {
+      $this->getConfig();
+      $class = $this->config_user['class'];
+      $toString = $this->config_user['toString'];
+      $peer = sprintf('%sPeer', $class);
+      $author = call_user_func(array($peer, 'retrieveByPk'), $this->author_id);
+      $this->author = (!is_null($author)) ? $author->$toString() : '';
+    }
+    else
+    {
+      $this->author = $this->author_name;
+    }
   }
 
 
@@ -44,12 +51,12 @@ class BasesfCommentComponents extends sfComponents
 
     if ($this->getUser()->isAuthenticated() && $this->config_user['enabled'])
     {
-      $this->action = 'authenticated_comment';
+      $this->action = 'authenticatedComment';
       $this->config_used = $this->config_user;
     }
     else
     {
-      $this->action = 'anonymous_comment';
+      $this->action = 'anonymousComment';
       $this->config_used = $this->config_anonymous;
     }
   }
@@ -84,12 +91,28 @@ class BasesfCommentComponents extends sfComponents
     $this->comments = $object->getComments(array('order' => $order, 'namespace' => $namespace), $criteria);
   }
 
+  public function executeGravatar()
+  {
+    if (isset($this->author_id))
+    {
+      $this->getConfig();
+      $class = $this->config_user['class'];
+      $toString = $this->config_user['toString'];
+      $toEmail = $this->config_user['toEmail'];
+      $peer = sprintf('%sPeer', $class);
+      $author = call_user_func(array($peer, 'retrieveByPk'), $this->author_id);
+      $this->author_name = (!is_null($author)) ? $author->$toString() : '';
+      $this->author_email = (!is_null($author)) ? $author->$toEmail() : '';
+    }
+  }
+
   protected function getConfig()
   {
     $config_anonymous = array('enabled' => true,
                               'layout'  => array('name' => 'required',
                                                  'email' => 'required',
                                                  'title' => 'optional',
+                                                 'website' => 'optional',
                                                  'comment' => 'required'),
                               'name'    => 'Anonymous User');
     $config_user = array('enabled'   => true,
