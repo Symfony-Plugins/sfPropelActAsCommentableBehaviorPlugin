@@ -147,11 +147,10 @@ class sfPropelActAsCommentableToolkit
     {
       $object_model = $tokens[$token][0];
       $object_id = $tokens[$token][1];
-
       $new_token = self::generateToken($object_model, $object_id);
       
       // check is token has changed or not (ie., if the user's IP has changed)
-      if ($token == $new_$token)
+      if ($token == $new_token)
       {
         return self::retrieveCommentableObject($object_model, $object_id);
       }
