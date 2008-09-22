@@ -48,13 +48,13 @@ $t->ok(count($object1_comments) == $object1->getNbComments(), 'getNbComment() pe
 
 $object3 = _create_object();
 $object3->save();
-$comment1 = array('text'         => 'One first comment', 
-                  'author_name'  => 'Gérard', 
+$comment1 = array('text'         => 'One first comment',
+                  'author_name'  => 'Gérard',
                   'author_email' => 'gerard@lambert.com');
 $object3->addComment($comment1);
 $t->ok($object3->getNbComments() == 1, 'comments can also be attached using arrays.');
-$comment2 = array('text'         => 'My Back-office comment', 
-                  'author_name'  => 'Gérard', 
+$comment2 = array('text'         => 'My Back-office comment',
+                  'author_name'  => 'Gérard',
                   'author_email' => 'gerard@lambert.com',
                   'namespace'    => 'backend');
 $object3->addComment($comment2);
@@ -93,9 +93,9 @@ $object1->addComment('One first comment.');
 $object1->addComment('One second comment.');
 $asc_comments = $object1->getComments(array('order' => 'asc'));
 $desc_comments = $object1->getComments(array('order' => 'desc'));
-$t->ok(($asc_comments[0]['Text'] == 'One first comment.') 
-       && ($asc_comments[1]['Text'] == 'One second comment.') 
-       && ($desc_comments[1]['Text'] == 'One first comment.') 
+$t->ok(($asc_comments[0]['Text'] == 'One first comment.')
+       && ($asc_comments[1]['Text'] == 'One second comment.')
+       && ($desc_comments[1]['Text'] == 'One first comment.')
        && ($desc_comments[0]['Text'] == 'One second comment.'), 'comments can be retrieved in a specific order.');
 
 

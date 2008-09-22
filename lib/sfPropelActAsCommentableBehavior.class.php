@@ -69,6 +69,7 @@ class sfPropelActAsCommentableBehavior
             $comment['namespace'] = null;
           }
 
+          $comment['comment_namespace'] = $comment['namespace'];
           $comment_object = new sfComment();
           $comment_object->fromArray($comment, BasePeer::TYPE_FIELDNAME);
           $comment_object->setCommentableId($object->getPrimaryKey());
@@ -128,7 +129,7 @@ class sfPropelActAsCommentableBehavior
 
     if ($namespace != null)
     {
-      $c->add(sfCommentPeer::NAMESPACE, $namespace);
+      $c->add(sfCommentPeer::COMMENT_NAMESPACE, $namespace);
     }
 
     return sfCommentPeer::doDelete($c);
@@ -187,11 +188,7 @@ class sfPropelActAsCommentableBehavior
 
     if (isset($options['namespace']))
     {
-      $c->add(sfCommentPeer::NAMESPACE, $options['namespace']);
-    }
-    else
-    {
-      //$c->add(sfCommentPeer::NAMESPACE, '');
+      $c->add(sfCommentPeer::COMMENT_NAMESPACE, $options['namespace']);
     }
 
     if (isset($options['order']) && ($options['order'] == 'desc'))
