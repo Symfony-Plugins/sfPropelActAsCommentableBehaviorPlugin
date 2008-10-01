@@ -236,7 +236,7 @@ It is possible to retrieve comments from a commentable object:
 
     foreach ($comments as $comment)
     {
-      echo '<p>'.$comment->getText().'</p>';
+      echo '<p>'.$comment['Text'].'</p>';
     }
 
 ### Removing one object's comment
