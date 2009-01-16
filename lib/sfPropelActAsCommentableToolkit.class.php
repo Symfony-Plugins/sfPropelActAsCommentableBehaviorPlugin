@@ -2,17 +2,18 @@
 /*
  * This file is part of the sfPropelActAsCommentableBehavior package.
  *
- * (c) 2008 Xavier Lacot <xavier@lacot.org>
+ * (c) 2007-2009 Xavier Lacot <xavier@lacot.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 /**
- * sfPropelActAsCommentableBehavior toolkit class
+ * sfPropelActAsCommentableToolkit class
  *
- * @author Xavier Lacot
- * @author Nicolas Perriault
+ * @author     Xavier Lacot
+ * @author     Nicolas Perriault
+ * @see        http://www.symfony-project.org/plugins/sfPropelActAsCommentableBehaviorPlugin
  */
 class sfPropelActAsCommentableToolkit
 {
@@ -55,13 +56,37 @@ class sfPropelActAsCommentableToolkit
     {
       $ip_adress = $_SERVER['REMOTE_ADDR'];
     }
-  
-    return md5(sprintf('%s-%s-%s-%s', 
-                       $ip_adress,
-                       $object_model, 
-                       $object_id, 
-                       sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_salt', 
-                                     'c0mm3nt4bl3')));
+
+    return md5(sprintf(
+      '%s-%s-%s-%s',
+      $ip_adress,
+      $object_model,
+      $object_id,
+      sfConfig::get(
+        'app_sfPropelActAsCommentableBehaviorPlugin_salt',
+        'c0mm3nt4bl3'
+      )
+    ));
+  }
+
+  /**
+   * retrieves the plugin's configuration
+   */
+  public static function getConfig()
+  {
+    $config = array(
+      'anonymous'    => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_anonymous'),
+      'count'        => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_count'),
+      'date_format'  => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_date_format'),
+      'max_tokens'   => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_max_tokens'),
+      'namespaces'   => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_namespaces'),
+      'salt'         => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_salt'),
+      'use_css'      => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_css'),
+      'use_gravatar' => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_gravatar'),
+      'use_routes'   => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_routes'),
+      'user'         => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_user'),
+    );
+    return $config;
   }
 
   /**
@@ -148,7 +173,7 @@ class sfPropelActAsCommentableToolkit
       $object_model = $tokens[$token][0];
       $object_id = $tokens[$token][1];
       $new_token = self::generateToken($object_model, $object_id);
-      
+
       // check is token has changed or not (ie., if the user's IP has changed)
       if ($token == $new_token)
       {

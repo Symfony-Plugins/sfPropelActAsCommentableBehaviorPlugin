@@ -1,19 +1,25 @@
 <?php
 /*
  * This file is part of the sfPropelActAsCommentableBehavior package.
- * 
- * (c) 2007 Xavier Lacot <xavier@lacot.org>
- * 
+ *
+ * (c) 2007-2009 Xavier Lacot <xavier@lacot.org>
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-if (in_array('sfComment', sfConfig::get('sf_enabled_modules', array())))
+
+// add routing rules
+if (sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_routes', true) && in_array('sfComment', sfConfig::get('sf_enabled_modules', array())))
 {
-  $r = sfRouting::getInstance();
-  $r->prependRoute('sf_comment_authenticated', '/sfComment/authenticated_comment', array('module' => 'sfComment', 'action' => 'authenticatedComment'));
-  $r->prependRoute('sf_comment_anonymous', '/sfComment/anonymous_comment', array('module' => 'sfComment', 'action' => 'anonymousComment'));
+  $this->dispatcher->connect('routing.load_configuration', array('sfPropelActAsCommentableBehaviorRouting', 'listenToRoutingLoadConfigurationEvent'));
 }
 
+if (in_array('sfCommentAdmin', sfConfig::get('sf_enabled_modules')))
+{
+  $this->dispatcher->connect('routing.load_configuration', array('sfPropelActAsCommentableBehaviorRouting', 'addRouteForAdmin'));
+}
+
+// register behavior
 sfPropelBehavior::registerMethods('sfPropelActAsCommentableBehavior', array (
   array (
     'sfPropelActAsCommentableBehavior',

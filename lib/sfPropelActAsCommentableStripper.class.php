@@ -2,7 +2,7 @@
 /*
  * This file is part of the sfPropelActAsCommentableBehavior package.
  *
- * (c) 2008 Xavier Lacot <xavier@lacot.org>
+ * (c) 2007-2009 Xavier Lacot <xavier@lacot.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,14 +11,15 @@
 /**
  * sfPropelActAsCommentableBehavior stripper class
  *
- * @author Xavier Lacot
+ * @author   Xavier Lacot
+ * @see      http://www.symfony-project.org/plugins/sfPropelActAsCommentableBehaviorPlugin
  */
 class sfPropelActAsCommentableStripper
 {
   static public function clean($text)
   {
     $allowed_html_tags = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_allowed_tags', array());
-    require_once realpath(dirname(__FILE__).'/htmlpurifier-3.1.1-lite/library/HTMLPurifier.auto.php');
+    spl_autoload_register(array('HTMLPurifier_Bootstrap', 'autoload'));
     $config = HTMLPurifier_Config::createDefault();
     $config->set('HTML', 'Doctype', 'XHTML 1.0 Strict');
     $config->set('HTML', 'Allowed', implode(',', array_keys($allowed_html_tags)));

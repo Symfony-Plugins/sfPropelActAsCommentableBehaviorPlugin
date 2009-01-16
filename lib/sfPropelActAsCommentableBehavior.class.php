@@ -2,7 +2,7 @@
 /*
  * This file is part of the sfPropelActAsCommentableBehavior package.
  *
- * (c) 2008 Xavier Lacot <xavier@lacot.org>
+ * (c) 2007-2009 Xavier Lacot <xavier@lacot.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  * - comments are saved when applied
  *
  * @author   Xavier Lacot <xavier@lacot.org>
- * @see      http://www.symfony-project.com/trac/wiki/sfPropelActAsCommentableBehaviorPlugin
+ * @see      http://www.symfony-project.org/plugins/sfPropelActAsCommentableBehaviorPlugin
  */
 
 class sfPropelActAsCommentableBehavior

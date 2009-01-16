@@ -2,13 +2,16 @@
 /**
  * sfPropelActAsCommentableBehaviorPlugin base components.
  *
- * @package    plugins
- * @subpackage comment
+ * @package    sfPropelActAsCommentableBehaviorPlugin
+ * @subpackage sfComment module
  * @author     Xavier Lacot <xavier@lacot.org>
- * @link       http://trac.symfony-project.com/trac/wiki/sfPropelActAsCommentableBehaviorPlugin
+ * @see        http://www.symfony-project.org/plugins/sfPropelActAsCommentableBehaviorPlugin
  */
 class BasesfCommentComponents extends sfComponents
 {
+  /**
+   * Displays the author name
+   */
   public function executeAuthor()
   {
     if (isset($this->author_id))
@@ -26,41 +29,61 @@ class BasesfCommentComponents extends sfComponents
     }
   }
 
-
-  public function executeCommentForm()
+  /**
+   * Diplays the commenting form
+   *
+   * @param $request
+   */
+  public function executeCommentForm(sfWebRequest $request)
   {
     $this->getConfig();
+    $config = sfContext::getInstance()->getUser()->isAuthenticated() ? $this->config_user : $this->config_anonymous;
+    $this->layout = $config['layout'];
 
-    if ($this->config['css'])
+    if ($this->config['use_css'])
     {
-      sfContext::getInstance()->getResponse()->addStylesheet('/sfPropelActAsCommentableBehaviorPlugin/css/sf_comment');
+      sfContext::getInstance()->getResponse()->addStylesheet('/sfPropelActAsCommentableBehaviorPlugin/css/sf_comment', 'first');
     }
 
-    if ($this->object instanceof sfOutputEscaperObjectDecorator)
-    {
-      $object = $this->object->getRawValue();
-    }
-    else
-    {
-      $object = $this->object;
-    }
+    // get the list of the allowed tags
+    $allowed_html_tags = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_allowed_tags', array());
+    sort($allowed_html_tags);
+    $this->allowed_html_tags = $allowed_html_tags;
 
-    $this->object_model = get_class($object);
-    $this->object_id = $object->getPrimaryKey();
-    $this->token = sfPropelActAsCommentableToolkit::addTokenToSession($this->object_model, $this->object_id);
+    // build the comment form
+    $sf_comment = $request->getParameter('sf_comment');
+    $this->form = new sfCommentingForm();
 
-    if ($this->getUser()->isAuthenticated() && $this->config_user['enabled'])
+    if ($request->isMethod('post') && is_array($sf_comment))
     {
-      $this->action = 'authenticatedComment';
-      $this->config_used = $this->config_user;
+      $this->form->bind($sf_comment);
     }
     else
     {
-      $this->action = 'anonymousComment';
-      $this->config_used = $this->config_anonymous;
+      // get the object token
+      if ($this->object instanceof sfOutputEscaperObjectDecorator)
+      {
+        $object = $this->object->getRawValue();
+      }
+      else
+      {
+        $object = $this->object;
+      }
+
+      $this->object_model = get_class($object);
+      $this->object_id = $object->getPrimaryKey();
+      $token = sfPropelActAsCommentableToolkit::addTokenToSession($this->object_model, $this->object_id);
+
+      $this->form->setDefaults(array(
+        'referer' => str_replace($request->getUriPrefix(), '', $request->getUri()),
+        'token'   => $token
+      ));
     }
   }
 
+  /**
+   * Displays the list of the comments
+   */
   public function executeCommentList()
   {
     $object = $this->object;
@@ -91,6 +114,9 @@ class BasesfCommentComponents extends sfComponents
     $this->comments = $object->getComments(array('order' => $order, 'namespace' => $namespace), $criteria);
   }
 
+  /**
+   * Displays one author's gravatar
+   */
   public function executeGravatar()
   {
     if (isset($this->author_id))
@@ -106,32 +132,14 @@ class BasesfCommentComponents extends sfComponents
     }
   }
 
+  /**
+   * Gets the plugin's configuration
+   */
   protected function getConfig()
   {
-    $config_anonymous = array('enabled' => true,
-                              'layout'  => array('name' => 'required',
-                                                 'email' => 'required',
-                                                 'title' => 'optional',
-                                                 'website' => 'optional',
-                                                 'comment' => 'required'),
-                              'name'    => 'Anonymous User');
-    $config_user = array('enabled'   => true,
-                         'layout'    => array('title' => 'optional',
-                                              'comment' => 'required'),
-                         'table'     => 'sf_guard_user',
-                         'id'        => 'id',
-                         'class'     => 'sfGuardUser',
-                         'id_method' => 'getUserId',
-                         'toString'  => 'toString',
-                         'save_name' => false);
-    $config = array('user'             => $config_user,
-                    'anonymous'        => $config_anonymous,
-                    'use_ajax'         => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_use_ajax', false),
-                    'css'              => sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_css', true),
-                    'namespaces'       => array());
-
+    $config = sfPropelActAsCommentableToolkit::getConfig();
     $this->config = $config;
-    $this->config_anonymous = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_anonymous', $config_anonymous);
-    $this->config_user = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_user', $config_user);
+    $this->config_anonymous = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_anonymous', $config['anonymous']);
+    $this->config_user = sfConfig::get('app_sfPropelActAsCommentableBehaviorPlugin_user', $config['user']);
   }
 }

@@ -9,7 +9,7 @@ module for enabling comments in your application in less than 3 minutes.
 
   * add/remove comment(s) on an object
   * unit-tested
-  * comment module, with ajax support and layout customization
+  * comment module, with layout customization
   * comment namespaces (separate comments for the front-office and the
  back-office, for instance)
   * comment admin-module
@@ -27,7 +27,7 @@ module for enabling comments in your application in less than 3 minutes.
 ## Philosophy of the stuff
 
   * commentable objects must have a primary key
-  * comments can only be attached on objects that have already been saved
+  * comments can only be attached on objects that have already been saved once
   * comments are saved when applied
 
 ## Get it installed
@@ -42,7 +42,7 @@ module for enabling comments in your application in less than 3 minutes.
 
         propel.builder.addBehaviors = true
 
-  * edit the classes that you want to make taggable. For instance, for lib/model/Post.php:
+  * edit the classes that you want to make commentable. For instance, for lib/model/Post.php:
 
         class Post extends BasePost
         {
@@ -86,29 +86,32 @@ complete the following steps:
                 email:        required
                 website:      optional
                 title:        optional
-                comment:      required
+                text:         required
               name:           Anonymous User
-            css:              false
             count:
-              enabled:        true
+              enabled:        false
               method:         setSfCommentCount
               namespace:      frontend
             date_format:      words
-            hide_form:        true
+            max_tokens:       20
             namespaces:
+              frontend:       
               backend:        administrator
-            use_ajax:         true
+            salt:             c0mm3nt4bl3
+            use_css:          true
             use_gravatar:     true
+            use_routes:       true
             user:
-              enabled:        true
+              enabled:        false
               layout:
                 title:        optional
-                comment:      required
+                text:         required
               table:          sf_guard_user
               id:             id
               class:          sfGuardUser
               id_method:      getId
               toString:       __toString
+              save_name:      false
 
 
 ### Optional settings
@@ -124,22 +127,26 @@ file, you can tweak the default setup:
  comments:
    * **enabled** : enables or disables anonymous comments.
    * **layout** : defines the layout of the comment form. Required fields will
- get a "required class" and will get validated. If you want a field
+ get a "required" class and will get validated. If you want a field
  not to appear (for instance, the "title" field), simply remove the
- associated line.
+ associated line. Supported field names are :
+    * name
+    * email
+    * website
+    * title
+    * text
    * **name** : the default name of the user, in case the anonymous comment
    form does not as for an author name.
-  * the **css** rule tells the plugin whether or not to include the default CSS
- file of the plugin
   * the **count** rules are useful for optimizing objects sorting on their
   comments count. See the paragraph "Retrieving one object's comments number"
   for more details.
   * the **date_format** option tells the plugin in which format the date of one
  comment should be displayed. This can be "words" (the default tweak), or any
  Symfony-compliant formatting string
-  * the **hide_form** option lets the plugin hide the comment form when there
- is no comment. The comment form can then be displayed by clicking on a "add
- comment" link
+  * the **max_tokens** option is the maximal amount of commentable-objects 
+ tokens to be stored in session. As you do not want to reveal the technical id 
+ of the commentable objects, the plugin generates encrypted tokens and stores 
+ them in the session.
   * the **namespaces** parameter lists the namespaces for which a security
  check must be made:
    * when a namespace is listed under the **namespaces** parameter, its value
@@ -150,17 +157,24 @@ file, you can tweak the default setup:
    user being able to add comments on the back-office.
    * You can of course use your own namespaces names (ie., "backend"
  and "frontend" are not compulsory names).
-  * the **use_ajax** rule indicates whether or not the comment system must use
- ajax.
+  * the **salt** option is the private key to encrypt the commentable tokens 
+ (see max_tokens for more explanations)
+  * the **use_css** rule tells the plugin whether or not to include the default 
+ CSS file of the plugin
   * the **use_gravatar** rule indicates whether or not the comment system must
  display gravatar. This option uses the [sfGravatarPlugin](http://www.symfony-project.org/plugins/sfGravatarPlugin).
   * the **user** rules will tweak the way the plugin handles comments from
  authenticated users:
    * **enabled** : enables or disables comments from authenticated users.
    * **layout** : defines the layout of the comment form. Required fields
-   will get a "required class" and will get validated. If you want a field not
+   will get a "required" class and will get validated. If you want a field not
    to appear (for instance, the "title" field), simply remove the associated
-   line.
+   line. Supported field names are :
+    * name
+    * email
+    * website
+    * title
+    * text
    * **table** : name of the table that stores the users data.
    * **id** : name of the primary key of a user in the users table.
    * **class** : class associated to the users.
@@ -223,8 +237,15 @@ that class automagically gets commentable:
     // blah
     $post->save();
     $post->addComment('This is a cool comment.');
-    $post->addComment(array('title' => 'this is a cool title', 'text' => 'this is a cool comment', 'author_id' => sfContext::getInstance()->getUser()->getUserId()));
-    $post->addComment(array('This is a cool comment.', 'this is one other comment'));
+    $post->addComment(array(
+      'title'     => 'this is a cool title', 
+      'text'      => 'this is a cool comment', 
+      'author_id' => sfContext::getInstance()->getUser()->getUserId()
+    ));
+    $post->addComment(array(
+      'This is a cool comment.', 
+      'this is one other comment'
+    ));
 
 
 ### Retrieving one object's comments
@@ -344,7 +365,7 @@ back-office.
         propel.builder.addBehaviors = true
 
 
-  * edit the classes that you want to make taggable. For instance, for lib/model/Post.php:
+  * edit the classes that you want to make commentable. For instance, for lib/model/Post.php:
 
         <?php
         class Post extends BasePost
@@ -377,7 +398,7 @@ back-office.
 
 
   * add the following lines in the app.yml **of both applications**, or in the
- project's app.yml:
+ project's global app.yml:
 
         all:
           sfPropelActAsCommentableBehaviorPlugin:
@@ -395,24 +416,25 @@ back-office.
                 name:         required
                 email:        required
                 website:      optional
-                comment:      required
+                text:         required
               name:           Anonymous User
-            css:              false
             count:
               enabled:        false
               method:         setSfCommentCount
               namespace:      frontend
             date_format:      words
-            hide_form:        true
+            max_tokens:       15
             namespaces:
               backend:        administrator
-            use_ajax:         true
+            salt:             c0mm3nt4bl3
+            use_css:          false
             use_gravatar:     true
+            use_routes:       true
             user:
               enabled:        false
               layout:
                 title:        optional
-                comment:      required
+                text:         required
               table:          sf_guard_user
               id:             id
               class:          sfGuardUser
@@ -489,9 +511,15 @@ at [xavier@lacot.org](http://lacot.org/).
 
 ## Changelog
 
-### trunk
+### Version 1.2.0 - 2009-01-12
 
-  * made plugin support Propel 1.3 (closes #3544)
+  * created a Symfony 1.2 version of the plugin. No more evolutions (apart from bugfixes) will be done for previous versions of Symfony.
+  * removed support of ajax, since Symfony 1.2 is js framework agnostic
+  * upgraded to HTMLPurifier 3.2.0
+
+### Version 1.0.0 - 2009-01-12
+
+  * added Propel 1.3 support
 
 ### Version 0.5 - 2008-08-11
 

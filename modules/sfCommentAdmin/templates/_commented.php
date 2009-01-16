@@ -3,15 +3,15 @@ $model = $sf_comment->getCommentableModel();
 $id = $sf_comment->getCommentableId();
 $commented_object = sfPropelActAsCommentableToolkit::retrieveCommentableObject($model, $id);
 
-if (is_callable(array($commented_object, 'getTitle')))
+if (in_array('getTitle', get_class_methods($commented_object)))
 {
   $commented = $commented_object->getTitle();
 }
-elseif (is_callable(array($commented_object, 'getName')))
+elseif (in_array('getName', get_class_methods($commented_object)))
 {
   $commented = $commented_object->getName();
 }
-elseif (is_callable(array($commented_object, 'toString')))
+elseif (in_array('toString', get_class_methods($commented_object)))
 {
   $commented = $commented_object->toString();
 }

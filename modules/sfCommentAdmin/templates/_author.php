@@ -13,8 +13,16 @@ else
   $class = $config_user['class'];
   $toString = $config_user['toString'];
   $peer = sprintf('%sPeer', $class);
-  $author = call_user_func(array($peer, 'retrieveByPk'), $sf_comment->getAuthorId());
-  $author = (!is_null($author)) ? $author->$toString() : '';
+
+  if (is_callable(array($peer, 'retrieveByPk')))
+  {
+    $author = call_user_func(array($peer, 'retrieveByPk'), $sf_comment->getAuthorId());
+    $author = (!is_null($author)) ? $author->$toString() : '';
+  }
+  else
+  {
+    $author = '';
+  }
 }
 
 echo $author;

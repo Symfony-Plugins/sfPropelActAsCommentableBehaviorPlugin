@@ -1,16 +1,42 @@
 <?php
 // test variables definition
-define('TEST_CLASS', 'sfTestObject');
+define('TEST_CLASS', 'Post');
 
 // initializes testing framework
-$app = 'frontend';
-include(dirname(__FILE__).'/../../../../test/bootstrap/functional.php');
+$sf_root_dir = realpath(dirname(__FILE__).'/../../../../');
+$apps_dir = glob($sf_root_dir.'/apps/*', GLOB_ONLYDIR);
+$app = substr($apps_dir[0],
+              strrpos($apps_dir[0], DIRECTORY_SEPARATOR) + 1,
+              strlen($apps_dir[0]));
+if (!$app)
+{
+  throw new Exception('No app has been detected in this project');
+}
 
 // initialize database manager
-$databaseManager = new sfDatabaseManager();
-$databaseManager->initialize();
-$con = Propel::getConnection();
+require_once($sf_root_dir.'/test/bootstrap/unit.php');
 
+if (SYMFONY_VERSION >= 1.1)
+{
+  $configuration = ProjectConfiguration::getApplicationConfiguration($app, 'test', true);
+  $databaseManager = new sfDatabaseManager($configuration);
+}
+else
+{
+  // initialize database manager
+  require_once($sf_root_dir.'/test/bootstrap/functional.php');
+  require_once($sf_symfony_lib_dir.'/vendor/lime/lime.php');
+
+  $databaseManager = new sfDatabaseManager();
+  $databaseManager->initialize();
+  $con = Propel::getConnection();
+}
+
+if (!defined('TEST_CLASS') || !class_exists(TEST_CLASS))
+{
+  // Don't run tests
+  return;
+}
 // clean the database
 sfCommentPeer::doDeleteAll();
 call_user_func(array(_create_object()->getPeer(), 'doDeleteAll'));
@@ -30,9 +56,9 @@ $object1 = _create_object();
 $t->ok($object1->getComments() == array(), 'a new object has no comment.');
 $object1->save();
 
-$object1->addComment('One first comment.');
+$object1->addComment('<p>One first comment.</p>');
 $object_comments = $object1->getComments();
-$t->ok((count($object_comments) == 1) && ($object_comments[0]['Text'] == 'One first comment.'), 'a saved object can get commented.');
+$t->ok((count($object_comments) == 1) && ($object_comments[0]['Text'] == '<p>One first comment.</p>'), 'a saved object can get commented.');
 
 $object1->addComment('One second comment.');
 $t->ok($object1->getNbComments() == 2, 'one object can have several comments.');
@@ -59,7 +85,7 @@ $comment2 = array('text'         => 'My Back-office comment',
                   'namespace'    => 'backend');
 $object3->addComment($comment2);
 $object3->addComment($comment2);
-$t->ok(($object3->getNbComments() == 1) && ($object3->getNbComments(array('namespace' => 'backend')) == 2), 'comments are separated into namespaces, and can be retrieved separately.');
+$t->ok(($object3->getNbComments() == 3) && ($object3->getNbComments(array('namespace' => 'backend')) == 2), 'comments are separated into namespaces, and can be retrieved separately.');
 
 
 // these tests check for other methods
@@ -89,14 +115,14 @@ sfCommentPeer::doDeleteAll();
 
 $object1 = _create_object();
 $object1->save();
-$object1->addComment('One first comment.');
-$object1->addComment('One second comment.');
+$object1->addComment('<p>One first comment.</p>');
+$object1->addComment('<p>One second comment.</p>');
 $asc_comments = $object1->getComments(array('order' => 'asc'));
 $desc_comments = $object1->getComments(array('order' => 'desc'));
-$t->ok(($asc_comments[0]['Text'] == 'One first comment.')
-       && ($asc_comments[1]['Text'] == 'One second comment.')
-       && ($desc_comments[1]['Text'] == 'One first comment.')
-       && ($desc_comments[0]['Text'] == 'One second comment.'), 'comments can be retrieved in a specific order.');
+$t->ok(($asc_comments[0]['Text'] == '<p>One first comment.</p>')
+       && ($asc_comments[1]['Text'] == '<p>One second comment.</p>')
+       && ($desc_comments[1]['Text'] == '<p>One first comment.</p>')
+       && ($desc_comments[0]['Text'] == '<p>One second comment.</p>'), 'comments can be retrieved in a specific order.');
 
 
 // test object creation
